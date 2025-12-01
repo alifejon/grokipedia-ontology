@@ -1,0 +1,1987 @@
+[
+  {
+    "@id": "http://grokipedia.org/property#caused_by",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "caused by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Large_Language_Model_is_a_Machine_Learning",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Large_Language_Model"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Claude_is_a_Machine_Learning",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Claude"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#hasSourceURL",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "Source URL from Grokipedia"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "hasSourceURL"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#anyURI"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#relation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Relation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#organization",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Organization"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#ChatGPT",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#derived_from": [
+      {
+        "@id": "http://grokipedia.org/ontology#OpenAI"
+      }
+    ],
+    "http://grokipedia.org/property#developer": [
+      {
+        "@value": "OpenAI"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Chatbots"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#LLM_Applications"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An AI chatbot developed by OpenAI based on the GPT architecture. It can engage in conversational dialogue and assist with various tasks."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Large_Language_Model"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      }
+    ],
+    "http://grokipedia.org/property#released": [
+      {
+        "@value": "2022"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An AI chatbot developed by OpenAI based on the GPT architecture. It can engage in conversational dialogue and assist with various tasks."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "ChatGPT"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Computer_Vision",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Image_Processing"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A field of AI that trains computers to interpret and understand the visual world. Using digital images and deep learning models, machines can accurately identify and classify objects."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A field of AI that trains computers to interpret and understand the visual world. Using digital images and deep learning models, machines can accurately identify and classify objects."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Computer Vision"
+      },
+      {
+        "@value": "CV"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#see_also",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "see also"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#launched",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Claude_is_a_Artificial_Intelligence",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Claude"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Geoffrey_Hinton",
+    "@type": [
+      "http://grokipedia.org/class#person"
+    ],
+    "http://grokipedia.org/property#birth_year": [
+      {
+        "@value": "1947"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Scientists"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Researchers"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "British-Canadian cognitive psychologist and computer scientist, known as a 'Godfather of AI'. Pioneer in deep learning and neural networks."
+      }
+    ],
+    "http://grokipedia.org/property#related_to": [
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Google_DeepMind"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "British-Canadian cognitive psychologist and computer scientist, known as a 'Godfather of AI'. Pioneer in deep learning and neural networks."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Geoffrey Hinton"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#process",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Process"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Generative_AI",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Creative_AI"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "AI systems capable of generating new content including text, images, audio, and video based on patterns learned from training data."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://grokipedia.org/property#related_to": [
+      {
+        "@id": "http://grokipedia.org/ontology#Large_Language_Model"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "AI systems capable of generating new content including text, images, audio, and video based on patterns learned from training data."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Generative AI"
+      },
+      {
+        "@value": "GenAI"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Machine_Learning",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Computer_Science"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Statistics"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A subset of AI that provides systems the ability to automatically learn and improve from experience without being explicitly programmed."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A subset of AI that provides systems the ability to automatically learn and improve from experience without being explicitly programmed."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Machine Learning"
+      },
+      {
+        "@value": "ML"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_ChatGPT_is_a_Deep_Learning",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#ChatGPT"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#AI_Safety",
+    "@type": [
+      "http://grokipedia.org/class#abstract"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Research"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Ethics"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A research field focused on making AI systems safe, beneficial, and aligned with human values. Addresses risks from advanced AI systems."
+      }
+    ],
+    "http://grokipedia.org/property#related_to": [
+      {
+        "@id": "http://grokipedia.org/ontology#Anthropic"
+      }
+    ],
+    "http://grokipedia.org/property#supports": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A research field focused on making AI systems safe, beneficial, and aligned with human values. Addresses risks from advanced AI systems."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "AI Safety"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#hasLabel",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "Human-readable label"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "hasLabel"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#released",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#time_period",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Time Period"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Large_Language_Model_is_a_Artificial_Intelligence",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Large_Language_Model"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Anthropic",
+    "@type": [
+      "http://grokipedia.org/class#organization"
+    ],
+    "http://grokipedia.org/property#founded": [
+      {
+        "@value": "2021"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Companies"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Safety"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An AI safety company that develops Claude, a large language model designed to be helpful, harmless, and honest."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An AI safety company that develops Claude, a large language model designed to be helpful, harmless, and honest."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Anthropic"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#xAI",
+    "@type": [
+      "http://grokipedia.org/class#organization"
+    ],
+    "http://grokipedia.org/property#founded": [
+      {
+        "@value": "2023"
+      }
+    ],
+    "http://grokipedia.org/property#founder": [
+      {
+        "@value": "Elon Musk"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Companies"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Technology"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An artificial intelligence company founded by Elon Musk. xAI developed Grok, an AI assistant, and operates Grokipedia."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An artificial intelligence company founded by Elon Musk. xAI developed Grok, an AI assistant, and operates Grokipedia."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "xAI"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_ChatGPT_is_a_Machine_Learning",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#ChatGPT"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Artificial_Intelligence",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Computer_Science"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Technology"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Cognitive_Science"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "The simulation of human intelligence processes by machines, especially computer systems. These processes include learning, reasoning, and self-correction."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "The simulation of human intelligence processes by machines, especially computer systems. These processes include learning, reasoning, and self-correction."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Artificial Intelligence"
+      },
+      {
+        "@value": "AI"
+      },
+      {
+        "@value": "Machine Intelligence"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#location",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Location"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Grok_is_a_Deep_Learning",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Grok"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#work",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Work"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#operator",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#instance_of",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "instance of"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Alan_Turing",
+    "@type": [
+      "http://grokipedia.org/class#person"
+    ],
+    "http://grokipedia.org/property#birth_year": [
+      {
+        "@value": "1912"
+      }
+    ],
+    "http://grokipedia.org/property#death_year": [
+      {
+        "@value": "1954"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Scientists"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Computer_Science_Pioneers"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "British mathematician and computer scientist, considered the father of theoretical computer science and AI. Created the Turing Test."
+      }
+    ],
+    "http://grokipedia.org/property#related_to": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "British mathematician and computer scientist, considered the father of theoretical computer science and AI. Created the Turing Test."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Alan Turing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#results_in",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "results in"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Grokipedia",
+    "@type": [
+      "http://grokipedia.org/class#work"
+    ],
+    "http://grokipedia.org/property#derived_from": [
+      {
+        "@id": "http://grokipedia.org/ontology#Grok"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#xAI"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Encyclopedia"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Content"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An AI-generated online encyclopedia operated by xAI. Articles are generated by Grok, making it the first major AI-generated encyclopedia."
+      }
+    ],
+    "http://grokipedia.org/property#launched": [
+      {
+        "@value": "2025"
+      }
+    ],
+    "http://grokipedia.org/property#operator": [
+      {
+        "@value": "xAI"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An AI-generated online encyclopedia operated by xAI. Articles are generated by Grok, making it the first major AI-generated encyclopedia."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Grokipedia"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#birth_year",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#occurs_in",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "occurs in"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Reinforcement_Learning_is_a_Artificial_Intelligence",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Reinforcement_Learning"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#supports",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "supports"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#headquarters",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Google_DeepMind",
+    "@type": [
+      "http://grokipedia.org/class#organization"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Companies"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Research_Labs"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An AI research laboratory that created AlphaGo, AlphaFold, and Gemini. Known for breakthrough research in deep learning and reinforcement learning."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An AI research laboratory that created AlphaGo, AlphaFold, and Gemini. Known for breakthrough research in deep learning and reinforcement learning."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Google DeepMind"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Deep_Learning",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Neural_Networks"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A subset of machine learning based on artificial neural networks with representation learning. It can be supervised, semi-supervised or unsupervised."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://grokipedia.org/property#used_for": [
+      {
+        "@id": "http://grokipedia.org/ontology#Computer_Vision"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A subset of machine learning based on artificial neural networks with representation learning. It can be supervised, semi-supervised or unsupervised."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Deep Learning"
+      },
+      {
+        "@value": "DL"
+      },
+      {
+        "@value": "Deep Neural Networks"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#related_to",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "related to"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Ontology"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An ontology derived from Grokipedia knowledge base"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Grokipedia Ontology"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#founded",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Claude",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#derived_from": [
+      {
+        "@id": "http://grokipedia.org/ontology#Anthropic"
+      }
+    ],
+    "http://grokipedia.org/property#developer": [
+      {
+        "@value": "Anthropic"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Chatbots"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#LLM_Applications"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An AI assistant developed by Anthropic. Claude is designed to be helpful, harmless, and honest, with a focus on safety and reliability."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Large_Language_Model"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An AI assistant developed by Anthropic. Claude is designed to be helpful, harmless, and honest, with a focus on safety and reliability."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Claude"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#used_for",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "used for"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Grok_is_a_Artificial_Intelligence",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Grok"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#hasConfidence",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "Confidence score"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "hasConfidence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#float"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Reinforcement_Learning",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#AI"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An area of machine learning where an agent learns to make decisions by performing actions and receiving rewards or penalties."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An area of machine learning where an agent learns to make decisions by performing actions and receiving rewards or penalties."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Reinforcement Learning"
+      },
+      {
+        "@value": "RL"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#OpenAI",
+    "@type": [
+      "http://grokipedia.org/class#organization"
+    ],
+    "http://grokipedia.org/property#founded": [
+      {
+        "@value": "2015"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Companies"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Research_Labs"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An American artificial intelligence research laboratory. OpenAI created ChatGPT and the GPT series of language models."
+      }
+    ],
+    "http://grokipedia.org/property#headquarters": [
+      {
+        "@value": "San Francisco"
+      }
+    ],
+    "http://grokipedia.org/property#related_to": [
+      {
+        "@id": "http://grokipedia.org/ontology#Anthropic"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#xAI"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An American artificial intelligence research laboratory. OpenAI created ChatGPT and the GPT series of language models."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "OpenAI"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#hasDescription",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "Description of the concept"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "hasDescription"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Grok_is_a_Machine_Learning",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Grok"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#technology",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Technology"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#property",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Property"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#equivalent_to",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "equivalent to"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#has_property",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "has property"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#event",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#death_year",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Natural_Language_Processing",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Linguistics"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Computer_Science"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A subfield of AI focused on the interaction between computers and humans through natural language. The goal is to enable computers to understand, interpret, and generate human language."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A subfield of AI focused on the interaction between computers and humans through natural language. The goal is to enable computers to understand, interpret, and generate human language."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Natural Language Processing"
+      },
+      {
+        "@value": "NLP"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#is_a",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "is a"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Turing_Test",
+    "@type": [
+      "http://grokipedia.org/class#abstract"
+    ],
+    "http://grokipedia.org/property#derived_from": [
+      {
+        "@id": "http://grokipedia.org/ontology#Alan_Turing"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#AI_Theory"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Philosophy_of_Mind"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A test of a machine's ability to exhibit intelligent behavior indistinguishable from a human. Proposed by Alan Turing in 1950."
+      }
+    ],
+    "http://grokipedia.org/property#used_for": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A test of a machine's ability to exhibit intelligent behavior indistinguishable from a human. Proposed by Alan Turing in 1950."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Turing Test"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#createdAt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "Creation timestamp"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "createdAt"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#dateTime"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#located_in",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "located in"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Neural_Network",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Computer_Science"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A computing system inspired by biological neural networks. It consists of interconnected nodes (neurons) that process information using connectionist approaches."
+      }
+    ],
+    "http://grokipedia.org/property#part_of": [
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      }
+    ],
+    "http://grokipedia.org/property#used_for": [
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A computing system inspired by biological neural networks. It consists of interconnected nodes (neurons) that process information using connectionist approaches."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Neural Network"
+      },
+      {
+        "@value": "ANN"
+      },
+      {
+        "@value": "Artificial Neural Network"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Transformer",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#NLP"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A deep learning architecture that uses self-attention mechanisms. Transformers are the basis for models like GPT, BERT, and other modern language models."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Neural_Network"
+      }
+    ],
+    "http://grokipedia.org/property#part_of": [
+      {
+        "@id": "http://grokipedia.org/ontology#Large_Language_Model"
+      }
+    ],
+    "http://grokipedia.org/property#used_for": [
+      {
+        "@id": "http://grokipedia.org/ontology#Natural_Language_Processing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A deep learning architecture that uses self-attention mechanisms. Transformers are the basis for models like GPT, BERT, and other modern language models."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Transformer"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Deep_Learning_is_a_Artificial_Intelligence",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Grok",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#derived_from": [
+      {
+        "@id": "http://grokipedia.org/ontology#xAI"
+      }
+    ],
+    "http://grokipedia.org/property#developer": [
+      {
+        "@value": "xAI"
+      }
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#Chatbots"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#LLM_Applications"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "An AI assistant developed by xAI. Grok is known for its wit and willingness to answer provocative questions."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Large_Language_Model"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "An AI assistant developed by xAI. Grok is known for its wit and willingness to answer provocative questions."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Grok"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#part_of",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "part of"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#contradicts",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "contradicts"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#entity",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_Claude_is_a_Deep_Learning",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#Claude"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#person",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Person"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#Large_Language_Model",
+    "@type": [
+      "http://grokipedia.org/class#technology"
+    ],
+    "http://grokipedia.org/property#hasCategory": [
+      {
+        "@id": "http://grokipedia.org/ontology#NLP"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Generative_AI"
+      }
+    ],
+    "http://grokipedia.org/property#hasDescription": [
+      {
+        "@value": "A type of AI model trained on vast amounts of text data to understand and generate human-like text. LLMs are the foundation of modern chatbots and AI assistants."
+      }
+    ],
+    "http://grokipedia.org/property#is_a": [
+      {
+        "@id": "http://grokipedia.org/ontology#Deep_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Machine_Learning"
+      },
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://grokipedia.org/property#used_for": [
+      {
+        "@id": "http://grokipedia.org/ontology#Natural_Language_Processing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@value": "A type of AI model trained on vast amounts of text data to understand and generate human-like text. LLMs are the foundation of modern chatbots and AI assistants."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Large Language Model"
+      },
+      {
+        "@value": "LLM"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#developer",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/ontology#stmt_ChatGPT_is_a_Artificial_Intelligence",
+    "@type": [
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+    ],
+    "http://grokipedia.org/property#hasConfidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#double",
+        "@value": 0.9
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#object": [
+      {
+        "@id": "http://grokipedia.org/ontology#Artificial_Intelligence"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate": [
+      {
+        "@id": "http://grokipedia.org/property#is_a"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject": [
+      {
+        "@id": "http://grokipedia.org/ontology#ChatGPT"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#derived_from",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "derived from"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/property#founder",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://grokipedia.org/class#abstract",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Abstract"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  }
+]
