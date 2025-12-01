@@ -488,6 +488,35 @@ def export(
         raise typer.Exit(1)
 
 
+@app.command()
+def serve(
+    data_path: Path = typer.Argument(..., help="Path to data file (JSON or TTL)"),
+    host: str = typer.Option("127.0.0.1", "-h", "--host", help="Host to bind to"),
+    port: int = typer.Option(8000, "-p", "--port", help="Port to bind to"),
+    reload: bool = typer.Option(False, "--reload", help="Enable auto-reload (dev mode)"),
+) -> None:
+    """Start the web dashboard server."""
+    try:
+        from grokipedia_ontology.api import run_server
+    except ImportError:
+        console.print("[red]Web dependencies not installed[/red]")
+        console.print("[yellow]Install with: pip install grokipedia-ontology[web][/yellow]")
+        raise typer.Exit(1)
+
+    if not data_path.exists():
+        console.print(f"[red]Data file not found: {data_path}[/red]")
+        raise typer.Exit(1)
+
+    console.print(f"[bold blue]Starting Grokipedia Ontology Dashboard[/bold blue]")
+    console.print(f"  Data: {data_path}")
+    console.print(f"  URL: http://{host}:{port}")
+    console.print(f"  API Docs: http://{host}:{port}/api/docs")
+    console.print()
+    console.print("[dim]Press Ctrl+C to stop[/dim]")
+
+    run_server(data_path=data_path, host=host, port=port, reload=reload)
+
+
 def main() -> None:
     """Main entry point."""
     app()

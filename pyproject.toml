@@ -55,6 +55,15 @@ visualization = [
     "pyvis>=0.3.2",
     "matplotlib>=3.8.0",
 ]
+web = [
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "jinja2>=3.1.0",
+    "python-multipart>=0.0.6",
+]
+all = [
+    "grokipedia-ontology[visualization,web]",
+]
 
 [project.scripts]
 grokipedia-ontology = "grokipedia_ontology.cli:app"
