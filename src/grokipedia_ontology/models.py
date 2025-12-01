@@ -78,10 +78,18 @@ class Article(BaseModel):
 
     def to_concept(self) -> Concept:
         """Convert article to a concept for ontology integration."""
+        # Prefer summary, fallback to truncated content
+        if self.summary:
+            description = self.summary
+        elif self.content:
+            description = self.content[:500]
+        else:
+            description = ""
+
         return Concept(
             name=self.concept_name,
             label=self.title,
-            description=self.summary or self.content[:500] if self.content else "",
+            description=description,
             source_url=self.url,
             properties=self.infobox,
             categories=self.categories,

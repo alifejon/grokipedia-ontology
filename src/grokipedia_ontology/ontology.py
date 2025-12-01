@@ -21,6 +21,14 @@ from grokipedia_ontology.models import (
     RelationType,
     OntologyStats,
 )
+from grokipedia_ontology.utils import (
+    get_logger,
+    sanitize_uri_component,
+    OntologyError,
+    CyclicReferenceError,
+)
+
+logger = get_logger(__name__)
 
 
 # Define namespaces
@@ -175,15 +183,24 @@ class GrokipediaOntology:
         Args:
             relation: Relation to add
         """
-        subject_uri = GROK[relation.subject]
-        object_uri = GROK[relation.object]
+        # Sanitize URI components to prevent invalid URIs
+        subject_safe = sanitize_uri_component(relation.subject)
+        object_safe = sanitize_uri_component(relation.object)
+
+        subject_uri = GROK[subject_safe]
+        object_uri = GROK[object_safe]
         predicate_uri = GROK_PROP[relation.predicate.value]
 
         self.graph.add((subject_uri, predicate_uri, object_uri))
+        logger.debug(f"Added relation: {relation.subject} --{relation.predicate.value}--> {relation.object}")
 
         # Add confidence as reification if not 1.0
         if relation.confidence < 1.0:
-            stmt_uri = GROK[f"stmt_{relation.subject}_{relation.predicate.value}_{relation.object}"]
+            # Create a safe statement URI
+            stmt_id = sanitize_uri_component(
+                f"stmt_{relation.subject}_{relation.predicate.value}_{relation.object}"
+            )
+            stmt_uri = GROK[stmt_id]
             self.graph.add((stmt_uri, RDF.type, RDF.Statement))
             self.graph.add((stmt_uri, RDF.subject, subject_uri))
             self.graph.add((stmt_uri, RDF.predicate, predicate_uri))
@@ -360,7 +377,7 @@ class GrokipediaOntology:
         self._concepts.update(other._concepts)
         self._relations.extend(other._relations)
 
-    def infer_relations(self) -> list[Relation]:
+    def infer_relations(self, detect_cycles: bool = True) -> list[Relation]:
         """
         Infer additional relations using basic reasoning.
 
@@ -368,10 +385,19 @@ class GrokipediaOntology:
         - Transitive closure for IS_A relations
         - Inverse relations
 
+        Args:
+            detect_cycles: If True, detect and log cyclic references
+
         Returns:
             List of inferred relations
+
+        Raises:
+            CyclicReferenceError: If detect_cycles is True and a cycle is found
         """
         inferred: list[Relation] = []
+        detected_cycles: list[list[str]] = []
+
+        logger.info("Starting relation inference...")
 
         # Build IS_A hierarchy
         is_a_map: dict[str, set[str]] = {}
@@ -381,21 +407,85 @@ class GrokipediaOntology:
                     is_a_map[relation.subject] = set()
                 is_a_map[relation.subject].add(relation.object)
 
-        # Compute transitive closure
-        def get_ancestors(concept: str, visited: set[str] | None = None) -> set[str]:
+        # Detect cycles using DFS
+        def detect_cycle(start: str) -> list[str] | None:
+            """Detect cycle starting from a concept, return cycle path if found."""
+            path: list[str] = []
+            visited: set[str] = set()
+
+            def dfs(node: str) -> list[str] | None:
+                if node in path:
+                    # Found cycle - return the cycle portion
+                    cycle_start = path.index(node)
+                    return path[cycle_start:] + [node]
+
+                if node in visited:
+                    return None
+
+                visited.add(node)
+                path.append(node)
+
+                for parent in is_a_map.get(node, set()):
+                    cycle = dfs(parent)
+                    if cycle:
+                        return cycle
+
+                path.pop()
+                return None
+
+            return dfs(start)
+
+        # Check for cycles
+        if detect_cycles:
+            for concept in is_a_map:
+                cycle = detect_cycle(concept)
+                if cycle and cycle not in detected_cycles:
+                    detected_cycles.append(cycle)
+                    logger.warning(f"Detected cyclic IS_A reference: {' -> '.join(cycle)}")
+
+            if detected_cycles:
+                logger.warning(f"Found {len(detected_cycles)} cyclic reference(s). Skipping affected concepts.")
+
+        # Get concepts involved in cycles
+        cyclic_concepts: set[str] = set()
+        for cycle in detected_cycles:
+            cyclic_concepts.update(cycle)
+
+        # Compute transitive closure with cycle protection
+        def get_ancestors(
+            concept: str,
+            visited: set[str] | None = None,
+            depth: int = 0,
+            max_depth: int = 100,
+        ) -> set[str]:
+            """Get all ancestors with depth limit and cycle protection."""
             if visited is None:
                 visited = set()
+
+            # Depth limit to prevent runaway recursion
+            if depth > max_depth:
+                logger.warning(f"Max depth reached for concept '{concept}'")
+                return set()
+
             if concept in visited:
                 return set()
+
             visited.add(concept)
 
             ancestors = is_a_map.get(concept, set()).copy()
             for parent in list(ancestors):
-                ancestors.update(get_ancestors(parent, visited))
+                # Skip if parent is involved in a cycle we're already processing
+                if parent not in cyclic_concepts or parent not in visited:
+                    ancestors.update(get_ancestors(parent, visited, depth + 1, max_depth))
+
             return ancestors
 
         # Add inferred IS_A relations
         for concept in is_a_map:
+            # Skip concepts involved in cycles
+            if concept in cyclic_concepts:
+                continue
+
             all_ancestors = get_ancestors(concept)
             direct_parents = is_a_map[concept]
 
@@ -410,4 +500,5 @@ class GrokipediaOntology:
                 inferred.append(relation)
                 self.add_relation(relation)
 
+        logger.info(f"Inference complete: {len(inferred)} new relations inferred")
         return inferred

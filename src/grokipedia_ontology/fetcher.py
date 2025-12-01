@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import re
+from collections import deque
 from typing import Any
 from urllib.parse import quote, urljoin
 
@@ -16,6 +17,13 @@ import httpx
 from bs4 import BeautifulSoup
 
 from grokipedia_ontology.models import Article
+from grokipedia_ontology.utils import (
+    get_logger,
+    RetryConfig,
+    FetchError,
+)
+
+logger = get_logger(__name__)
 
 
 class GrokipediaFetcher:
@@ -24,11 +32,15 @@ class GrokipediaFetcher:
     BASE_URL = "https://grokipedia.com"
     PAGE_URL_TEMPLATE = "https://grokipedia.com/page/{slug}"
 
+    # Maximum delay cap for exponential backoff (30 seconds)
+    MAX_BACKOFF_DELAY: float = 30.0
+
     def __init__(
         self,
         timeout: float = 30.0,
         max_retries: int = 3,
         delay_between_requests: float = 1.0,
+        max_backoff_delay: float | None = None,
     ) -> None:
         """
         Initialize the fetcher.
@@ -37,11 +49,17 @@ class GrokipediaFetcher:
             timeout: Request timeout in seconds
             max_retries: Maximum number of retry attempts
             delay_between_requests: Delay between consecutive requests (rate limiting)
+            max_backoff_delay: Maximum delay for exponential backoff (default: 30s)
         """
         self.timeout = timeout
         self.max_retries = max_retries
         self.delay = delay_between_requests
         self._client: httpx.AsyncClient | None = None
+        self._retry_config = RetryConfig(
+            max_retries=max_retries,
+            base_delay=1.0,
+            max_delay=max_backoff_delay or self.MAX_BACKOFF_DELAY,
+        )
 
     async def __aenter__(self) -> GrokipediaFetcher:
         """Async context manager entry."""
@@ -98,24 +116,62 @@ class GrokipediaFetcher:
 
         Returns:
             HTML content or None if fetch failed
+
+        Raises:
+            FetchError: If fetch fails after all retries (only for server errors)
         """
         client = self._get_client()
         url = self.build_url(topic)
+        last_error: Exception | None = None
 
         for attempt in range(self.max_retries):
             try:
+                logger.debug(f"Fetching topic '{topic}' (attempt {attempt + 1}/{self.max_retries})")
                 response = await client.get(url)
                 response.raise_for_status()
+                logger.debug(f"Successfully fetched '{topic}'")
                 return response.text
-            except httpx.HTTPStatusError as e:
-                if e.response.status_code == 404:
-                    return None
-                if attempt < self.max_retries - 1:
-                    await asyncio.sleep(2**attempt)
-            except httpx.RequestError:
-                if attempt < self.max_retries - 1:
-                    await asyncio.sleep(2**attempt)
 
+            except httpx.HTTPStatusError as e:
+                status_code = e.response.status_code
+                if status_code == 404:
+                    logger.info(f"Article not found: {topic}")
+                    return None
+                elif status_code >= 500:
+                    # Server error - retry with backoff
+                    last_error = e
+                    if attempt < self.max_retries - 1:
+                        delay = self._retry_config.get_delay(attempt)
+                        logger.warning(
+                            f"Server error {status_code} for '{topic}', "
+                            f"retrying in {delay:.1f}s (attempt {attempt + 1})"
+                        )
+                        await asyncio.sleep(delay)
+                else:
+                    # Client error (4xx except 404) - don't retry
+                    logger.error(f"Client error {status_code} for '{topic}': {e}")
+                    return None
+
+            except httpx.TimeoutException as e:
+                last_error = e
+                if attempt < self.max_retries - 1:
+                    delay = self._retry_config.get_delay(attempt)
+                    logger.warning(
+                        f"Timeout fetching '{topic}', retrying in {delay:.1f}s"
+                    )
+                    await asyncio.sleep(delay)
+
+            except httpx.RequestError as e:
+                last_error = e
+                if attempt < self.max_retries - 1:
+                    delay = self._retry_config.get_delay(attempt)
+                    logger.warning(
+                        f"Request error for '{topic}': {e}, retrying in {delay:.1f}s"
+                    )
+                    await asyncio.sleep(delay)
+
+        # All retries exhausted
+        logger.error(f"Failed to fetch '{topic}' after {self.max_retries} attempts")
         return None
 
     def parse_article(self, html: str, topic: str) -> Article:
@@ -296,10 +352,13 @@ class GrokipediaFetcher:
         """
         visited: set[str] = set()
         articles: list[Article] = []
-        queue: list[tuple[str, int]] = [(start_topic, 0)]
+        # Use deque for O(1) popleft instead of list.pop(0) which is O(n)
+        queue: deque[tuple[str, int]] = deque([(start_topic, 0)])
+
+        logger.info(f"Starting discovery from '{start_topic}' (max_depth={max_depth}, max_articles={max_articles})")
 
         while queue and len(articles) < max_articles:
-            topic, depth = queue.pop(0)
+            topic, depth = queue.popleft()
 
             if topic in visited or depth > max_depth:
                 continue
@@ -309,6 +368,7 @@ class GrokipediaFetcher:
 
             if article:
                 articles.append(article)
+                logger.debug(f"Discovered: {article.title} (depth={depth}, total={len(articles)})")
 
                 # Add linked topics to queue
                 if depth < max_depth:
@@ -318,4 +378,5 @@ class GrokipediaFetcher:
 
                 await asyncio.sleep(self.delay)
 
+        logger.info(f"Discovery complete: found {len(articles)} articles")
         return articles

@@ -22,6 +22,9 @@ from grokipedia_ontology.models import (
     OntologyStats,
 )
 from grokipedia_ontology.ontology import GrokipediaOntology
+from grokipedia_ontology.utils import get_logger
+
+logger = get_logger(__name__)
 
 
 class KnowledgeGraph:
@@ -66,6 +69,37 @@ class KnowledgeGraph:
         self._concepts[concept.name] = concept
         self.ontology.add_concept(concept)
 
+    def _ensure_node_exists(self, name: str) -> None:
+        """
+        Ensure a node exists in both the graph and _concepts dict.
+
+        If the node doesn't exist, creates a placeholder concept.
+
+        Args:
+            name: Name of the concept/node
+        """
+        if name not in self.graph:
+            # Create placeholder concept for consistency
+            placeholder = Concept(
+                name=name,
+                label=name.replace("_", " "),
+                description="",
+                concept_type=ConceptType.ENTITY,
+            )
+            self.graph.add_node(
+                name,
+                label=placeholder.label,
+                description=placeholder.description,
+                concept_type=placeholder.concept_type.value,
+                source_url=None,
+                properties={},
+                categories=[],
+            )
+            # Only add to _concepts if not already there
+            if name not in self._concepts:
+                self._concepts[name] = placeholder
+                logger.debug(f"Created placeholder concept: {name}")
+
     def add_relation(self, relation: Relation) -> None:
         """
         Add a relation as an edge in the graph.
@@ -73,11 +107,9 @@ class KnowledgeGraph:
         Args:
             relation: Relation to add
         """
-        # Ensure nodes exist
-        if relation.subject not in self.graph:
-            self.graph.add_node(relation.subject)
-        if relation.object not in self.graph:
-            self.graph.add_node(relation.object)
+        # Ensure nodes exist in both graph and _concepts
+        self._ensure_node_exists(relation.subject)
+        self._ensure_node_exists(relation.object)
 
         self.graph.add_edge(
             relation.subject,
@@ -88,6 +120,7 @@ class KnowledgeGraph:
             properties=relation.properties,
         )
         self.ontology.add_relation(relation)
+        logger.debug(f"Added relation: {relation.subject} --{relation.predicate.value}--> {relation.object}")
 
     def add_article(self, article: Article) -> None:
         """
