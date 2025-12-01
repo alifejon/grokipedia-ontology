@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "grokipedia-ontology",
+      "args": ["mcp-serve", "/path/to/your/knowledge_graph.json"],
+      "env": {}
+    }
+  }
+}

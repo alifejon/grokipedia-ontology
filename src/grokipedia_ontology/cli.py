@@ -517,6 +517,32 @@ def serve(
     run_server(data_path=data_path, host=host, port=port, reload=reload)
 
 
+@app.command(name="mcp-serve")
+def mcp_serve(
+    data_path: Path = typer.Argument(..., help="Path to data file (JSON or TTL)"),
+) -> None:
+    """Start the MCP (Model Context Protocol) server for AI assistants."""
+    import asyncio
+
+    try:
+        from grokipedia_ontology.mcp_server import run_mcp_server
+    except ImportError:
+        console.print("[red]MCP dependencies not installed[/red]")
+        console.print("[yellow]Install with: pip install grokipedia-ontology[mcp][/yellow]")
+        raise typer.Exit(1)
+
+    if not data_path.exists():
+        console.print(f"[red]Data file not found: {data_path}[/red]")
+        raise typer.Exit(1)
+
+    console.print(f"[bold blue]Starting Grokipedia Ontology MCP Server[/bold blue]")
+    console.print(f"  Data: {data_path}")
+    console.print()
+    console.print("[dim]Waiting for MCP client connection...[/dim]")
+
+    asyncio.run(run_mcp_server(data_path))
+
+
 def main() -> None:
     """Main entry point."""
     app()
