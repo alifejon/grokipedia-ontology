@@ -23,6 +23,7 @@ from grokipedia_ontology.fetcher import GrokipediaFetcher
 from grokipedia_ontology.ontology import GrokipediaOntology
 from grokipedia_ontology.graph import KnowledgeGraph
 from grokipedia_ontology.models import RelationType, ConceptType
+from grokipedia_ontology.visualization import GraphVisualizer
 
 app = typer.Typer(
     name="grokipedia-ontology",
@@ -296,6 +297,195 @@ def init(
 
     console.print(f"[green]Initialized ontology project at: {output_dir}[/green]")
     console.print(f"  Schema: {schema_path}")
+
+
+@app.command()
+def visualize(
+    input_path: Path = typer.Argument(..., help="Input ontology or JSON file"),
+    output_path: Path = typer.Option(
+        Path("knowledge_graph.html"), "-o", "--output", help="Output HTML file"
+    ),
+    title: str = typer.Option("Knowledge Graph", "-t", "--title", help="Visualization title"),
+    center: Optional[str] = typer.Option(None, "-c", "--center", help="Center node for subgraph"),
+    radius: int = typer.Option(2, "-r", "--radius", help="Radius for subgraph (if center specified)"),
+    max_nodes: Optional[int] = typer.Option(None, "-n", "--max-nodes", help="Maximum nodes to display"),
+    no_physics: bool = typer.Option(False, "--no-physics", help="Disable physics simulation"),
+    format: str = typer.Option("html", "-f", "--format", help="Output format (html, dot, png)"),
+    concept_types: Optional[str] = typer.Option(
+        None, "--types", help="Filter by concept types (comma-separated)"
+    ),
+    relation_types: Optional[str] = typer.Option(
+        None, "--relations", help="Filter by relation types (comma-separated)"
+    ),
+) -> None:
+    """Generate interactive visualization of the knowledge graph."""
+    # Load data
+    if input_path.suffix == ".json":
+        # Load from JSON (sample data format)
+        import json
+        data = json.loads(input_path.read_text())
+        graph = KnowledgeGraph()
+
+        # Import concepts
+        from grokipedia_ontology.models import Concept, Relation
+        for concept_data in data.get("concepts", []):
+            concept = Concept(**concept_data)
+            graph.add_concept(concept)
+
+        # Import relations
+        for rel_data in data.get("relations", []):
+            relation = Relation(**rel_data)
+            graph.add_relation(relation)
+
+        console.print(f"[blue]Loaded {len(graph)} concepts from JSON[/blue]")
+    else:
+        # Load from ontology file
+        ontology = GrokipediaOntology()
+        ontology.load(input_path)
+        graph = KnowledgeGraph(ontology)
+
+        # Rebuild concepts from SPARQL query
+        results = ontology.query("""
+            SELECT ?concept ?label ?type ?description WHERE {
+                ?concept a ?type .
+                ?concept rdfs:label ?label .
+                OPTIONAL { ?concept rdfs:comment ?description }
+                FILTER(STRSTARTS(STR(?type), "http://grokipedia.org/class#"))
+            }
+        """)
+
+        from grokipedia_ontology.models import Concept
+        for row in results:
+            concept_uri = row.get("concept", "")
+            name = concept_uri.split("#")[-1] if "#" in concept_uri else concept_uri.split("/")[-1]
+            type_uri = row.get("type", "")
+            concept_type_str = type_uri.split("#")[-1] if "#" in type_uri else "entity"
+
+            try:
+                concept_type = ConceptType(concept_type_str)
+            except ValueError:
+                concept_type = ConceptType.ENTITY
+
+            concept = Concept(
+                name=name,
+                label=row.get("label", name),
+                description=row.get("description", ""),
+                concept_type=concept_type,
+            )
+            graph._concepts[name] = concept
+            graph.graph.add_node(
+                name,
+                label=concept.label,
+                description=concept.description,
+                concept_type=concept.concept_type.value,
+            )
+
+        # Rebuild edges from SPARQL
+        edge_results = ontology.query("""
+            SELECT ?s ?p ?o WHERE {
+                ?s ?p ?o .
+                FILTER(STRSTARTS(STR(?p), "http://grokipedia.org/property#"))
+                FILTER(STRSTARTS(STR(?o), "http://grokipedia.org/ontology#"))
+            }
+        """)
+
+        for row in edge_results:
+            subject = row.get("s", "").split("#")[-1]
+            predicate = row.get("p", "").split("#")[-1]
+            obj = row.get("o", "").split("#")[-1]
+            if subject and obj:
+                graph.graph.add_edge(subject, obj, relation_type=predicate)
+
+        console.print(f"[blue]Loaded ontology with {len(graph._concepts)} concepts[/blue]")
+
+    if len(graph) == 0:
+        console.print("[red]No concepts found in the input file[/red]")
+        raise typer.Exit(1)
+
+    # Parse filters
+    filter_types = concept_types.split(",") if concept_types else None
+    filter_rels = relation_types.split(",") if relation_types else None
+
+    # Create visualizer
+    visualizer = GraphVisualizer()
+
+    try:
+        if format == "html":
+            if center:
+                result_path = visualizer.visualize_subgraph(
+                    graph,
+                    center=center,
+                    radius=radius,
+                    output_path=output_path,
+                    physics=not no_physics,
+                    filter_concept_types=filter_types,
+                    filter_relation_types=filter_rels,
+                    max_nodes=max_nodes,
+                )
+            else:
+                result_path = visualizer.visualize(
+                    graph,
+                    output_path=output_path,
+                    title=title,
+                    physics=not no_physics,
+                    filter_concept_types=filter_types,
+                    filter_relation_types=filter_rels,
+                    max_nodes=max_nodes,
+                )
+            console.print(f"[green]Visualization saved to: {result_path}[/green]")
+            console.print(f"[blue]Open in browser to view interactive graph[/blue]")
+
+        elif format == "dot":
+            output_path = output_path.with_suffix(".dot")
+            result_path = visualizer.export_graphviz(graph, output_path)
+            console.print(f"[green]Graphviz DOT file saved to: {result_path}[/green]")
+            console.print("[blue]Convert to image with: dot -Tpng graph.dot -o graph.png[/blue]")
+
+        elif format == "png":
+            output_path = output_path.with_suffix(".png")
+            result_path = visualizer.generate_stats_chart(graph, output_path)
+            if result_path:
+                console.print(f"[green]Statistics chart saved to: {result_path}[/green]")
+            else:
+                console.print("[red]Failed to generate chart (matplotlib not installed)[/red]")
+                raise typer.Exit(1)
+
+        else:
+            console.print(f"[red]Unknown format: {format}[/red]")
+            raise typer.Exit(1)
+
+    except ImportError as e:
+        console.print(f"[red]{e}[/red]")
+        console.print("[yellow]Install visualization dependencies:[/yellow]")
+        console.print("  pip install grokipedia-ontology[visualization]")
+        raise typer.Exit(1)
+
+
+@app.command()
+def export(
+    input_path: Path = typer.Argument(..., help="Input ontology file"),
+    output_path: Path = typer.Argument(..., help="Output file path"),
+    format: str = typer.Option("graphml", "-f", "--format", help="Export format (graphml, gexf, json)"),
+) -> None:
+    """Export knowledge graph to various formats."""
+    ontology = GrokipediaOntology()
+    ontology.load(input_path)
+
+    graph = KnowledgeGraph(ontology)
+
+    if format == "graphml":
+        graph.export_graphml(str(output_path))
+        console.print(f"[green]Exported to GraphML: {output_path}[/green]")
+    elif format == "gexf":
+        graph.export_gexf(str(output_path))
+        console.print(f"[green]Exported to GEXF (Gephi): {output_path}[/green]")
+    elif format == "json":
+        data = graph.to_dict()
+        output_path.write_text(json.dumps(data, indent=2, default=str))
+        console.print(f"[green]Exported to JSON: {output_path}[/green]")
+    else:
+        console.print(f"[red]Unknown format: {format}[/red]")
+        raise typer.Exit(1)
 
 
 def main() -> None:

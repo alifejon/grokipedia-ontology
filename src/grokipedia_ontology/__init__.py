@@ -12,6 +12,9 @@ from grokipedia_ontology.models import Article, Concept, Relation
 from grokipedia_ontology.fetcher import GrokipediaFetcher
 from grokipedia_ontology.ontology import GrokipediaOntology
 from grokipedia_ontology.graph import KnowledgeGraph
+from grokipedia_ontology.visualization import GraphVisualizer
+from grokipedia_ontology.cache import ArticleCache, CachedFetcher, MemoryCache, DiskCache
+from grokipedia_ontology.search import SearchIndex, SearchHit
 from grokipedia_ontology.utils import (
     GrokipediaError,
     FetchError,
@@ -30,6 +33,15 @@ __all__ = [
     "GrokipediaFetcher",
     "GrokipediaOntology",
     "KnowledgeGraph",
+    "GraphVisualizer",
+    # Caching
+    "ArticleCache",
+    "CachedFetcher",
+    "MemoryCache",
+    "DiskCache",
+    # Search
+    "SearchIndex",
+    "SearchHit",
     # Exceptions
     "GrokipediaError",
     "FetchError",
