@@ -1,0 +1,246 @@
+@prefix : <http://grokipedia.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix grok: <http://grokipedia.org/ontology#> .
+@prefix grok_class: <http://grokipedia.org/class#> .
+@prefix grok_prop: <http://grokipedia.org/property#> .
+
+# =============================================================================
+# ONTOLOGY DECLARATION
+# =============================================================================
+
+<http://grokipedia.org/ontology> a owl:Ontology ;
+    rdfs:label "Grokipedia Ontology"@en ;
+    rdfs:comment "An ontology for representing knowledge extracted from Grokipedia, an AI-generated encyclopedia."@en ;
+    dc:title "Grokipedia Ontology" ;
+    dc:description "This ontology provides a formal framework for representing concepts, relations, and knowledge derived from Grokipedia articles." ;
+    dc:creator "Grokipedia Ontology Project" ;
+    dcterms:created "2025"^^xsd:gYear ;
+    owl:versionInfo "0.1.0" .
+
+# =============================================================================
+# BASE CLASSES (Concept Types)
+# =============================================================================
+
+grok_class:Entity a owl:Class ;
+    rdfs:label "Entity"@en ;
+    rdfs:comment "A physical or abstract thing that exists."@en ;
+    rdfs:subClassOf owl:Thing .
+
+grok_class:Event a owl:Class ;
+    rdfs:label "Event"@en ;
+    rdfs:comment "An occurrence or happening in time."@en ;
+    rdfs:subClassOf owl:Thing .
+
+grok_class:Process a owl:Class ;
+    rdfs:label "Process"@en ;
+    rdfs:comment "An ongoing activity or series of actions."@en ;
+    rdfs:subClassOf owl:Thing .
+
+grok_class:Property a owl:Class ;
+    rdfs:label "Property"@en ;
+    rdfs:comment "An attribute or characteristic of an entity."@en ;
+    rdfs:subClassOf owl:Thing .
+
+grok_class:Relation a owl:Class ;
+    rdfs:label "Relation"@en ;
+    rdfs:comment "A connection or association between entities."@en ;
+    rdfs:subClassOf owl:Thing .
+
+grok_class:Abstract a owl:Class ;
+    rdfs:label "Abstract"@en ;
+    rdfs:comment "An abstract concept or idea."@en ;
+    rdfs:subClassOf owl:Thing .
+
+grok_class:Person a owl:Class ;
+    rdfs:label "Person"@en ;
+    rdfs:comment "An individual human being."@en ;
+    rdfs:subClassOf grok_class:Entity .
+
+grok_class:Organization a owl:Class ;
+    rdfs:label "Organization"@en ;
+    rdfs:comment "A group, institution, or company."@en ;
+    rdfs:subClassOf grok_class:Entity .
+
+grok_class:Location a owl:Class ;
+    rdfs:label "Location"@en ;
+    rdfs:comment "A geographic place or position."@en ;
+    rdfs:subClassOf grok_class:Entity .
+
+grok_class:TimePeriod a owl:Class ;
+    rdfs:label "Time Period"@en ;
+    rdfs:comment "A historical era, duration, or temporal span."@en ;
+    rdfs:subClassOf owl:Thing .
+
+grok_class:Work a owl:Class ;
+    rdfs:label "Work"@en ;
+    rdfs:comment "A creative or intellectual work."@en ;
+    rdfs:subClassOf grok_class:Entity .
+
+grok_class:Technology a owl:Class ;
+    rdfs:label "Technology"@en ;
+    rdfs:comment "A technical system, tool, or method."@en ;
+    rdfs:subClassOf grok_class:Entity .
+
+# =============================================================================
+# OBJECT PROPERTIES (Relation Types)
+# =============================================================================
+
+grok_prop:isA a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "is a"@en ;
+    rdfs:comment "Taxonomic/subclass relation indicating type hierarchy."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:partOf a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "part of"@en ;
+    rdfs:comment "Mereological relation indicating composition."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:inverseOf grok_prop:hasPart .
+
+grok_prop:hasPart a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "has part"@en ;
+    rdfs:comment "Inverse of partOf relation."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:relatedTo a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "related to"@en ;
+    rdfs:comment "General association between concepts."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:instanceOf a owl:ObjectProperty ;
+    rdfs:label "instance of"@en ;
+    rdfs:comment "Class instantiation relation."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Class .
+
+grok_prop:hasProperty a owl:ObjectProperty ;
+    rdfs:label "has property"@en ;
+    rdfs:comment "Property attribution relation."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range grok_class:Property .
+
+grok_prop:causedBy a owl:ObjectProperty ;
+    rdfs:label "caused by"@en ;
+    rdfs:comment "Causal relation indicating cause."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:inverseOf grok_prop:resultsIn .
+
+grok_prop:resultsIn a owl:ObjectProperty ;
+    rdfs:label "results in"@en ;
+    rdfs:comment "Effect relation indicating consequence."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:usedFor a owl:ObjectProperty ;
+    rdfs:label "used for"@en ;
+    rdfs:comment "Functional relation indicating purpose."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:locatedIn a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:label "located in"@en ;
+    rdfs:comment "Spatial relation indicating location."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range grok_class:Location .
+
+grok_prop:occursIn a owl:ObjectProperty ;
+    rdfs:label "occurs in"@en ;
+    rdfs:comment "Temporal or contextual relation."@en ;
+    rdfs:domain grok_class:Event ;
+    rdfs:range owl:Thing .
+
+grok_prop:contradicts a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "contradicts"@en ;
+    rdfs:comment "Logical opposition between concepts."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:supports a owl:ObjectProperty ;
+    rdfs:label "supports"@en ;
+    rdfs:comment "Evidential support relation."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:derivedFrom a owl:ObjectProperty ;
+    rdfs:label "derived from"@en ;
+    rdfs:comment "Derivation or origin relation."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:equivalentTo a owl:ObjectProperty, owl:SymmetricProperty, owl:TransitiveProperty ;
+    rdfs:label "equivalent to"@en ;
+    rdfs:comment "Semantic equivalence between concepts."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+grok_prop:seeAlso a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "see also"@en ;
+    rdfs:comment "Cross-reference relation."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+# =============================================================================
+# DATA PROPERTIES
+# =============================================================================
+
+grok_prop:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:comment "Textual description of a concept."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+grok_prop:hasLabel a owl:DatatypeProperty ;
+    rdfs:label "has label"@en ;
+    rdfs:comment "Human-readable label for a concept."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+grok_prop:hasSourceURL a owl:DatatypeProperty ;
+    rdfs:label "has source URL"@en ;
+    rdfs:comment "URL of the source Grokipedia article."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:anyURI .
+
+grok_prop:hasConfidence a owl:DatatypeProperty ;
+    rdfs:label "has confidence"@en ;
+    rdfs:comment "Confidence score for extracted information."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:float .
+
+grok_prop:createdAt a owl:DatatypeProperty ;
+    rdfs:label "created at"@en ;
+    rdfs:comment "Timestamp of concept creation."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:dateTime .
+
+grok_prop:hasCategory a owl:ObjectProperty ;
+    rdfs:label "has category"@en ;
+    rdfs:comment "Category assignment for a concept."@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range skos:Concept .
+
+# =============================================================================
+# ANNOTATION PROPERTIES
+# =============================================================================
+
+grok_prop:extractedFrom a owl:AnnotationProperty ;
+    rdfs:label "extracted from"@en ;
+    rdfs:comment "Source from which information was extracted."@en .
+
+grok_prop:extractionMethod a owl:AnnotationProperty ;
+    rdfs:label "extraction method"@en ;
+    rdfs:comment "Method used to extract information."@en .
+
+grok_prop:lastUpdated a owl:AnnotationProperty ;
+    rdfs:label "last updated"@en ;
+    rdfs:comment "Timestamp of last update."@en .
