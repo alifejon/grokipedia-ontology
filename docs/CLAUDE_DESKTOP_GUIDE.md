@@ -54,20 +54,40 @@ brew install uv
 
 #### uv로 패키지 설치
 
+> **📁 실행 경로**: 프로젝트를 관리할 디렉토리에서 실행합니다.
+
 ```bash
-# 새 가상환경 생성 및 패키지 설치
+# 1. 작업 디렉토리 생성 및 이동
+mkdir -p ~/projects/grokipedia
+cd ~/projects/grokipedia
+
+# 2. 새 가상환경 생성
 uv venv
+
+# 3. 가상환경 활성화
 source .venv/bin/activate  # Linux/macOS
 # .venv\Scripts\activate  # Windows
 
-# MCP 의존성과 함께 설치
+# 4. MCP 의존성과 함께 설치
 uv pip install grokipedia-ontology[mcp]
 
 # 또는 전체 기능 설치
 uv pip install grokipedia-ontology[all]
 ```
 
+**설치 후 디렉토리 구조:**
+```
+~/projects/grokipedia/
+├── .venv/                    # 가상환경 (uv가 생성)
+│   └── bin/
+│       └── grokipedia-ontology  # 실행 파일
+└── data/                     # 데이터 파일 (직접 생성)
+    └── knowledge_graph.json
+```
+
 #### uv tool로 전역 설치
+
+> **📁 실행 경로**: 어느 디렉토리에서든 실행 가능합니다.
 
 ```bash
 # uv tool로 전역 설치 (별도 가상환경 없이 사용)
@@ -75,7 +95,30 @@ uv tool install grokipedia-ontology[mcp]
 
 # 설치 위치 확인
 uv tool dir
+# 출력 예: /Users/username/.local/share/uv/tools
+
+# 실행 파일 경로 확인
+which grokipedia-ontology
+# 출력 예: /Users/username/.local/bin/grokipedia-ontology
 ```
+
+**참고**: `uv tool`은 `~/.local/bin`에 심볼릭 링크를 생성하므로 PATH에 `~/.local/bin`이 포함되어 있어야 합니다.
+
+### 설치 방법 비교
+
+| 방법 | 실행 경로 | 장점 | 단점 |
+|------|----------|------|------|
+| `pip install` | 가상환경 내 | 전통적인 방식 | venv 활성화 필요 |
+| `uv venv` + `uv pip` | 프로젝트 디렉토리 | 빠른 설치, 격리된 환경 | venv 활성화 필요 |
+| `uv tool install` | 어디서든 | 전역 설치, 활성화 불필요 | 버전 관리 어려움 |
+| `uv run` | 프로젝트 루트 | 소스 개발용 | 프로젝트 클론 필요 |
+| `uvx` | 어디서든 | 설치 없이 실행 | 첫 실행 시 느림 |
+
+**권장 사용 사례:**
+- **일반 사용자**: `uv tool install` (가장 간단)
+- **프로젝트별 관리**: `uv venv` + `uv pip install`
+- **개발/기여자**: `uv run` (소스 수정 가능)
+- **테스트/실험**: `uvx` (설치 없이 바로 사용)
 
 ### 설치 확인
 
@@ -271,25 +314,38 @@ Windows:
 
 #### uv run 사용 (프로젝트 디렉토리 기반)
 
-프로젝트 디렉토리에서 직접 실행하는 방법:
+프로젝트 소스코드를 직접 클론한 경우 사용합니다:
+
+```bash
+# 프로젝트 클론
+git clone https://github.com/grokipedia-ontology/grokipedia-ontology.git
+cd grokipedia-ontology
+
+# 의존성 동기화 (pyproject.toml 기반)
+uv sync --extra mcp
+```
+
+**Claude Desktop 설정:**
 
 ```json
 {
   "mcpServers": {
     "grokipedia-ontology": {
       "command": "uv",
-      "args": ["run", "--directory", "/path/to/grokipedia-ontology", "grokipedia-ontology", "mcp-serve", "/path/to/data.json"],
+      "args": ["run", "--directory", "/Users/username/projects/grokipedia-ontology", "grokipedia-ontology", "mcp-serve", "/path/to/data.json"],
       "env": {}
     }
   }
 }
 ```
 
+> **⚠️ 중요**: `--directory` 옵션에는 `pyproject.toml`이 있는 프로젝트 루트 경로를 지정합니다.
+
 이 방식은 프로젝트의 `pyproject.toml`에 정의된 의존성을 자동으로 사용합니다.
 
 #### uvx 사용 (일회성 실행)
 
-패키지를 설치하지 않고 직접 실행:
+> **📁 실행 경로**: 별도의 설치 없이 어디서든 실행 가능합니다. PyPI에서 자동으로 패키지를 다운로드합니다.
 
 ```json
 {
@@ -302,6 +358,8 @@ Windows:
   }
 }
 ```
+
+> **💡 팁**: `uvx`는 패키지를 캐시에 저장하므로 처음 실행 시에만 다운로드가 발생합니다.
 
 ### 6. Claude Desktop 재시작
 
