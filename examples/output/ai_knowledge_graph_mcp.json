@@ -1,0 +1,430 @@
+{
+  "concepts": [
+    {
+      "name": "Artificial_Intelligence",
+      "label": "Artificial Intelligence",
+      "description": "The simulation of human intelligence processes by machines, especially computer systems. These processes include learning, reasoning, and self-correction.",
+      "concept_type": "technology",
+      "categories": [
+        "Computer Science",
+        "Technology",
+        "Cognitive Science"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Machine_Learning",
+      "label": "Machine Learning",
+      "description": "A subset of AI that provides systems the ability to automatically learn and improve from experience without being explicitly programmed.",
+      "concept_type": "technology",
+      "categories": [
+        "AI",
+        "Computer Science",
+        "Statistics"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Deep_Learning",
+      "label": "Deep Learning",
+      "description": "A subset of machine learning based on artificial neural networks with representation learning. It can be supervised, semi-supervised or unsupervised.",
+      "concept_type": "technology",
+      "categories": [
+        "Machine Learning",
+        "Neural Networks"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Natural_Language_Processing",
+      "label": "Natural Language Processing",
+      "description": "A subfield of AI focused on the interaction between computers and humans through natural language. The goal is to enable computers to understand, interpret, and generate human language.",
+      "concept_type": "technology",
+      "categories": [
+        "AI",
+        "Linguistics",
+        "Computer Science"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Computer_Vision",
+      "label": "Computer Vision",
+      "description": "A field of AI that trains computers to interpret and understand the visual world. Using digital images and deep learning models, machines can accurately identify and classify objects.",
+      "concept_type": "technology",
+      "categories": [
+        "AI",
+        "Image Processing"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Large_Language_Model",
+      "label": "Large Language Model",
+      "description": "A type of AI model trained on vast amounts of text data to understand and generate human-like text. LLMs are the foundation of modern chatbots and AI assistants.",
+      "concept_type": "technology",
+      "categories": [
+        "NLP",
+        "Deep Learning",
+        "Generative AI"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Neural_Network",
+      "label": "Neural Network",
+      "description": "A computing system inspired by biological neural networks. It consists of interconnected nodes (neurons) that process information using connectionist approaches.",
+      "concept_type": "technology",
+      "categories": [
+        "Machine Learning",
+        "Computer Science"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Transformer",
+      "label": "Transformer",
+      "description": "A deep learning architecture that uses self-attention mechanisms. Transformers are the basis for models like GPT, BERT, and other modern language models.",
+      "concept_type": "technology",
+      "categories": [
+        "Deep Learning",
+        "NLP"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Reinforcement_Learning",
+      "label": "Reinforcement Learning",
+      "description": "An area of machine learning where an agent learns to make decisions by performing actions and receiving rewards or penalties.",
+      "concept_type": "technology",
+      "categories": [
+        "Machine Learning",
+        "AI"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "Generative_AI",
+      "label": "Generative AI",
+      "description": "AI systems capable of generating new content including text, images, audio, and video based on patterns learned from training data.",
+      "concept_type": "technology",
+      "categories": [
+        "AI",
+        "Deep Learning",
+        "Creative AI"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "OpenAI",
+      "label": "OpenAI",
+      "description": "An American artificial intelligence research laboratory. OpenAI created ChatGPT and the GPT series of language models.",
+      "concept_type": "organization",
+      "categories": [
+        "AI Companies",
+        "Research Labs"
+      ],
+      "aliases": [],
+      "properties": {
+        "founded": "2015",
+        "headquarters": "San Francisco"
+      }
+    },
+    {
+      "name": "xAI",
+      "label": "xAI",
+      "description": "An artificial intelligence company founded by Elon Musk. xAI developed Grok, an AI assistant, and operates Grokipedia.",
+      "concept_type": "organization",
+      "categories": [
+        "AI Companies",
+        "Technology"
+      ],
+      "aliases": [],
+      "properties": {
+        "founded": "2023",
+        "founder": "Elon Musk"
+      }
+    },
+    {
+      "name": "Anthropic",
+      "label": "Anthropic",
+      "description": "An AI safety company that develops Claude, a large language model designed to be helpful, harmless, and honest.",
+      "concept_type": "organization",
+      "categories": [
+        "AI Companies",
+        "AI Safety"
+      ],
+      "aliases": [],
+      "properties": {
+        "founded": "2021"
+      }
+    },
+    {
+      "name": "Google_DeepMind",
+      "label": "Google DeepMind",
+      "description": "An AI research laboratory that created AlphaGo, AlphaFold, and Gemini. Known for breakthrough research in deep learning and reinforcement learning.",
+      "concept_type": "organization",
+      "categories": [
+        "AI Companies",
+        "Research Labs"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "ChatGPT",
+      "label": "ChatGPT",
+      "description": "An AI chatbot developed by OpenAI based on the GPT architecture. It can engage in conversational dialogue and assist with various tasks.",
+      "concept_type": "technology",
+      "categories": [
+        "Chatbots",
+        "LLM Applications"
+      ],
+      "aliases": [],
+      "properties": {
+        "developer": "OpenAI",
+        "released": "2022"
+      }
+    },
+    {
+      "name": "Claude",
+      "label": "Claude",
+      "description": "An AI assistant developed by Anthropic. Claude is designed to be helpful, harmless, and honest, with a focus on safety and reliability.",
+      "concept_type": "technology",
+      "categories": [
+        "Chatbots",
+        "LLM Applications"
+      ],
+      "aliases": [],
+      "properties": {
+        "developer": "Anthropic"
+      }
+    },
+    {
+      "name": "Grok",
+      "label": "Grok",
+      "description": "An AI assistant developed by xAI. Grok is known for its wit and willingness to answer provocative questions.",
+      "concept_type": "technology",
+      "categories": [
+        "Chatbots",
+        "LLM Applications"
+      ],
+      "aliases": [],
+      "properties": {
+        "developer": "xAI"
+      }
+    },
+    {
+      "name": "Grokipedia",
+      "label": "Grokipedia",
+      "description": "An AI-generated online encyclopedia operated by xAI. Articles are generated by Grok, making it the first major AI-generated encyclopedia.",
+      "concept_type": "work",
+      "categories": [
+        "Encyclopedia",
+        "AI Content"
+      ],
+      "aliases": [],
+      "properties": {
+        "launched": "2025",
+        "operator": "xAI"
+      }
+    },
+    {
+      "name": "Alan_Turing",
+      "label": "Alan Turing",
+      "description": "British mathematician and computer scientist, considered the father of theoretical computer science and AI. Created the Turing Test.",
+      "concept_type": "person",
+      "categories": [
+        "Scientists",
+        "Computer Science Pioneers"
+      ],
+      "aliases": [],
+      "properties": {
+        "birth_year": "1912",
+        "death_year": "1954"
+      }
+    },
+    {
+      "name": "Geoffrey_Hinton",
+      "label": "Geoffrey Hinton",
+      "description": "British-Canadian cognitive psychologist and computer scientist, known as a 'Godfather of AI'. Pioneer in deep learning and neural networks.",
+      "concept_type": "person",
+      "categories": [
+        "Scientists",
+        "AI Researchers"
+      ],
+      "aliases": [],
+      "properties": {
+        "birth_year": "1947"
+      }
+    },
+    {
+      "name": "Turing_Test",
+      "label": "Turing Test",
+      "description": "A test of a machine's ability to exhibit intelligent behavior indistinguishable from a human. Proposed by Alan Turing in 1950.",
+      "concept_type": "abstract",
+      "categories": [
+        "AI Theory",
+        "Philosophy of Mind"
+      ],
+      "aliases": [],
+      "properties": {}
+    },
+    {
+      "name": "AI_Safety",
+      "label": "AI Safety",
+      "description": "A research field focused on making AI systems safe, beneficial, and aligned with human values. Addresses risks from advanced AI systems.",
+      "concept_type": "abstract",
+      "categories": [
+        "AI Research",
+        "Ethics"
+      ],
+      "aliases": [],
+      "properties": {}
+    }
+  ],
+  "relations": [
+    {
+      "subject": "Machine_Learning",
+      "predicate": "is_a",
+      "object": "Artificial_Intelligence",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Deep_Learning",
+      "predicate": "is_a",
+      "object": "Machine_Learning",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Natural_Language_Processing",
+      "predicate": "is_a",
+      "object": "Artificial_Intelligence",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Computer_Vision",
+      "predicate": "is_a",
+      "object": "Artificial_Intelligence",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Reinforcement_Learning",
+      "predicate": "is_a",
+      "object": "Machine_Learning",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Neural_Network",
+      "predicate": "part_of",
+      "object": "Deep_Learning",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Transformer",
+      "predicate": "is_a",
+      "object": "Neural_Network",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Large_Language_Model",
+      "predicate": "derived_from",
+      "object": "Transformer",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Large_Language_Model",
+      "predicate": "used_for",
+      "object": "Natural_Language_Processing",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Generative_AI",
+      "predicate": "is_a",
+      "object": "Artificial_Intelligence",
+      "confidence": 1.0
+    },
+    {
+      "subject": "ChatGPT",
+      "predicate": "derived_from",
+      "object": "OpenAI",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Claude",
+      "predicate": "derived_from",
+      "object": "Anthropic",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Grok",
+      "predicate": "derived_from",
+      "object": "xAI",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Grokipedia",
+      "predicate": "derived_from",
+      "object": "xAI",
+      "confidence": 1.0
+    },
+    {
+      "subject": "ChatGPT",
+      "predicate": "is_a",
+      "object": "Large_Language_Model",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Claude",
+      "predicate": "is_a",
+      "object": "Large_Language_Model",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Grok",
+      "predicate": "is_a",
+      "object": "Large_Language_Model",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Turing_Test",
+      "predicate": "derived_from",
+      "object": "Alan_Turing",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Geoffrey_Hinton",
+      "predicate": "related_to",
+      "object": "Deep_Learning",
+      "confidence": 1.0
+    },
+    {
+      "subject": "AI_Safety",
+      "predicate": "related_to",
+      "object": "Artificial_Intelligence",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Anthropic",
+      "predicate": "related_to",
+      "object": "AI_Safety",
+      "confidence": 1.0
+    },
+    {
+      "subject": "Google_DeepMind",
+      "predicate": "related_to",
+      "object": "Reinforcement_Learning",
+      "confidence": 1.0
+    }
+  ]
+}

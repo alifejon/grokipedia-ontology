@@ -523,22 +523,27 @@ def mcp_serve(
 ) -> None:
     """Start the MCP (Model Context Protocol) server for AI assistants."""
     import asyncio
+    import sys
+    from rich.console import Console
+
+    # MCP uses stdout for JSON-RPC, so all messages must go to stderr
+    stderr_console = Console(stderr=True)
 
     try:
         from grokipedia_ontology.mcp_server import run_mcp_server
     except ImportError:
-        console.print("[red]MCP dependencies not installed[/red]")
-        console.print("[yellow]Install with: pip install grokipedia-ontology[mcp][/yellow]")
+        stderr_console.print("[red]MCP dependencies not installed[/red]")
+        stderr_console.print("[yellow]Install with: pip install grokipedia-ontology[mcp][/yellow]")
         raise typer.Exit(1)
 
     if not data_path.exists():
-        console.print(f"[red]Data file not found: {data_path}[/red]")
+        stderr_console.print(f"[red]Data file not found: {data_path}[/red]")
         raise typer.Exit(1)
 
-    console.print(f"[bold blue]Starting Grokipedia Ontology MCP Server[/bold blue]")
-    console.print(f"  Data: {data_path}")
-    console.print()
-    console.print("[dim]Waiting for MCP client connection...[/dim]")
+    stderr_console.print(f"[bold blue]Starting Grokipedia Ontology MCP Server[/bold blue]")
+    stderr_console.print(f"  Data: {data_path}")
+    stderr_console.print()
+    stderr_console.print("[dim]Waiting for MCP client connection...[/dim]")
 
     asyncio.run(run_mcp_server(data_path))
 

@@ -29,11 +29,13 @@
 
 ```bash
 # MCP 의존성과 함께 설치
-pip install grokipedia-ontology[mcp]
+pip install "grokipedia-ontology[mcp]"
 
 # 또는 전체 기능 설치
-pip install grokipedia-ontology[all]
+pip install "grokipedia-ontology[all]"
 ```
+
+> **Note (zsh 사용자):** zsh 셸에서는 `[]` 대괄호가 글로브 패턴으로 해석되므로 반드시 따옴표로 감싸야 합니다.
 
 ### 방법 2: uv로 설치 (권장)
 
@@ -69,10 +71,10 @@ source .venv/bin/activate  # Linux/macOS
 # .venv\Scripts\activate  # Windows
 
 # 4. MCP 의존성과 함께 설치
-uv pip install grokipedia-ontology[mcp]
+uv pip install "grokipedia-ontology[mcp]"
 
 # 또는 전체 기능 설치
-uv pip install grokipedia-ontology[all]
+uv pip install "grokipedia-ontology[all]"
 ```
 
 **설치 후 디렉토리 구조:**
@@ -91,7 +93,7 @@ uv pip install grokipedia-ontology[all]
 
 ```bash
 # uv tool로 전역 설치 (별도 가상환경 없이 사용)
-uv tool install grokipedia-ontology[mcp]
+uv tool install "grokipedia-ontology[mcp]"
 
 # 설치 위치 확인
 uv tool dir
@@ -365,6 +367,40 @@ uv sync --extra mcp
 
 설정 변경 후 Claude Desktop을 완전히 종료했다가 다시 시작해야 합니다.
 
+## 검증된 설정 예시
+
+아래는 macOS에서 실제 작동하는 설정 예시입니다:
+
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "/Users/alifejon/.local/bin/uv",
+      "args": [
+        "--directory",
+        "/Users/alifejon/Documents/GitHub/grokipedia-ontology",
+        "run",
+        "grokipedia-ontology",
+        "mcp-serve",
+        "/Users/alifejon/Documents/GitHub/grokipedia-ontology/examples/output/ai_knowledge_graph_mcp.json"
+      ]
+    }
+  }
+}
+```
+
+**핵심 포인트:**
+- `command`: uv의 **전체 경로** 사용 (Claude Desktop의 PATH에 uv가 없을 수 있음)
+- `--directory`: 프로젝트 디렉토리 지정
+- 데이터 파일: **절대 경로** 사용
+
+### uv 경로 확인
+
+```bash
+which uv
+# 출력 예: /Users/username/.local/bin/uv
+```
+
 ## 데이터 준비
 
 ### 샘플 데이터 생성
@@ -414,6 +450,8 @@ Claude Desktop을 열면 MCP 서버가 자동으로 연결됩니다. 연결되�
 
 Claude에게 직접 요청:
 
+#### 로컬 지식 그래프 조회
+
 ```
 "지식 그래프에서 machine learning을 검색해줘"
 → search_concepts 도구 자동 호출
@@ -423,6 +461,16 @@ Claude에게 직접 요청:
 
 "Neural Network와 연결된 개념들을 보여줘"
 → get_neighbors 도구 자동 호출
+```
+
+#### 실시간 Grokipedia 조회 (NEW!)
+
+```
+"Grokipedia에서 Claude에 대해 실시간으로 찾아줘"
+→ fetch_grokipedia_article 도구 자동 호출
+
+"Transformer 관련 기사들을 5개 탐색해줘"
+→ discover_grokipedia_articles 도구 자동 호출
 ```
 
 ### 2. Resources (리소스)
@@ -517,7 +565,7 @@ pip show grokipedia-ontology
 which grokipedia-ontology
 
 # 경로가 나오지 않으면 pip 재설치
-pip install --force-reinstall grokipedia-ontology[mcp]
+pip install --force-reinstall "grokipedia-ontology[mcp]"
 ```
 
 ### 3. 데이터 파일 로드 실패
@@ -543,7 +591,7 @@ python -c "import json; json.load(open('/path/to/data.json'))"
 
 **해결:**
 ```bash
-pip install grokipedia-ontology[mcp]
+pip install "grokipedia-ontology[mcp]"
 ```
 
 ### 5. 로그 확인
@@ -695,6 +743,73 @@ uvx --from "grokipedia-ontology[mcp]==1.0.0" grokipedia-ontology mcp-serve /path
   }
 }
 ```
+
+## MCP 도구 전체 목록
+
+### 로컬 지식 그래프 도구
+
+| 도구명 | 설명 | 주요 파라미터 |
+|--------|------|--------------|
+| `search_concepts` | 개념 검색 | `query`, `limit`, `concept_type` |
+| `get_concept` | 개념 상세 조회 | `name` |
+| `get_neighbors` | 연결된 개념 조회 | `name`, `direction`, `relation_type` |
+| `find_path` | 두 개념 간 경로 탐색 | `source`, `target`, `max_length` |
+| `get_relations` | 관계 조회 | `subject`, `object`, `predicate` |
+| `get_stats` | 그래프 통계 | - |
+| `add_concept` | 개념 추가 | `name`, `label`, `description`, `concept_type` |
+| `add_relation` | 관계 추가 | `subject`, `predicate`, `object` |
+| `list_concept_types` | 개념 유형 목록 | - |
+| `list_relation_types` | 관계 유형 목록 | - |
+
+### 실시간 Grokipedia 도구
+
+| 도구명 | 설명 | 주요 파라미터 |
+|--------|------|--------------|
+| `fetch_grokipedia_article` | 실시간 기사 조회 | `topic`, `add_to_graph` |
+| `discover_grokipedia_articles` | 연관 기사 탐색 | `start_topic`, `max_depth`, `max_articles`, `add_to_graph` |
+
+### 리소스
+
+| URI | 설명 |
+|-----|------|
+| `ontology://stats` | 지식 그래프 통계 |
+| `ontology://concepts` | 전체 개념 목록 |
+| `ontology://relations` | 전체 관계 목록 |
+| `ontology://types` | 사용 가능한 유형 |
+| `ontology://concepts/{name}` | 특정 개념 상세 |
+| `ontology://neighbors/{name}` | 특정 개념의 이웃 |
+| `ontology://search/{query}` | 검색 결과 |
+
+### 프롬프트
+
+| 프롬프트명 | 설명 | 파라미터 |
+|-----------|------|---------|
+| `explore_concept` | 개념 탐색 및 설명 | `concept_name` |
+| `find_connections` | 두 개념 간 연결 분석 | `concept_a`, `concept_b` |
+| `summarize_domain` | 도메인 요약 | `domain` |
+| `compare_concepts` | 개념 비교 | `concepts` (쉼표 구분) |
+| `knowledge_qa` | 지식 그래프 기반 Q&A | `question` |
+
+## 아키텍처
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│   Grokipedia    │ ◄─► │  MCP Server      │ ◄─► │  Claude Desktop │
+│   (웹 소스)      │     │  (Python)        │     │  (AI 어시스턴트)  │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+        ▲                       │
+        │                       ▼
+        │               ┌──────────────────┐
+        │               │  Local Storage   │
+        └───────────────│  (JSON/TTL)      │
+          실시간 조회     └──────────────────┘
+                           로컬 캐시
+```
+
+**데이터 흐름:**
+1. **로컬 조회**: 미리 저장된 JSON/TTL 파일에서 빠르게 검색
+2. **실시간 조회**: grokipedia.com에서 최신 정보 가져오기
+3. **자동 캐싱**: 실시간 조회 결과를 로컬 그래프에 추가 (옵션)
 
 ## 참고 자료
 

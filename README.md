@@ -17,6 +17,22 @@ Grokipedia를 데이터 소스로 활용하는 지식 그래프 및 온톨로지
 
 ## 설치
 
+### uv 사용 (권장)
+
+```bash
+# 프로젝트 클론
+git clone https://github.com/grokipedia-ontology/grokipedia-ontology
+cd grokipedia-ontology
+
+# uv로 의존성 설치 및 가상환경 생성
+uv sync --all-extras
+
+# 실행
+uv run grokipedia-ontology --help
+```
+
+### pip 사용
+
 ```bash
 # pip를 통한 설치
 pip install grokipedia-ontology
@@ -26,7 +42,20 @@ pip install -e ".[dev]"
 
 # 시각화 도구 포함 설치
 pip install -e ".[visualization]"
+
+# MCP 서버 포함 설치
+pip install -e ".[mcp]"
+
+# 전체 기능 설치
+pip install -e ".[all]"
 ```
+
+> **Note (zsh 사용자):** zsh에서는 `[]`를 따옴표로 감싸야 합니다.
+> ```bash
+> # zsh에서 올바른 사용법
+> pip install "grokipedia-ontology[all]"
+> uv pip install "grokipedia-ontology[mcp]"
+> ```
 
 ## 빠른 시작
 
@@ -151,7 +180,51 @@ grokipedia-ontology search ml_graph.ttl "neural network"
 
 # 포맷 변환
 grokipedia-ontology convert ml_graph.ttl ml_graph.jsonld -f json-ld
+
+# MCP 서버 실행 (Claude Desktop 연동)
+grokipedia-ontology mcp-serve knowledge_graph.json
 ```
+
+## Claude Desktop 연동 (MCP 서버)
+
+이 프로젝트는 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)를 지원하여 Claude Desktop과 직접 연동할 수 있습니다.
+
+### 빠른 설정
+
+1. Claude Desktop 설정 파일 열기:
+   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+2. 설정 추가:
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "/path/to/.local/bin/uv",
+      "args": [
+        "--directory",
+        "/path/to/grokipedia-ontology",
+        "run",
+        "grokipedia-ontology",
+        "mcp-serve",
+        "/path/to/knowledge_graph.json"
+      ]
+    }
+  }
+}
+```
+
+3. Claude Desktop 재시작
+
+### MCP 도구
+
+| 기능 | 설명 |
+|------|------|
+| **로컬 조회** | 저장된 지식 그래프에서 개념 검색, 경로 탐색 |
+| **실시간 조회** | Grokipedia에서 최신 정보 직접 가져오기 |
+| **지식 추가** | 새로운 개념과 관계 동적 추가 |
+
+자세한 설정 방법은 [Claude Desktop 가이드](docs/CLAUDE_DESKTOP_GUIDE.md)를 참조하세요.
 
 ## 프로젝트 구조
 
@@ -163,13 +236,19 @@ grokipedia-ontology/
 │   ├── fetcher.py           # Grokipedia 데이터 수집기
 │   ├── ontology.py          # OWL/RDF 온톨로지 관리
 │   ├── graph.py             # 지식 그래프 (NetworkX)
+│   ├── search.py            # 검색 인덱스
+│   ├── visualization.py     # 시각화 도구
+│   ├── mcp_server.py        # MCP 서버 (Claude Desktop 연동)
 │   └── cli.py               # CLI 인터페이스
+├── docs/
+│   └── CLAUDE_DESKTOP_GUIDE.md  # Claude Desktop 설정 가이드
 ├── ontology/
 │   └── grokipedia.ttl       # 기본 온톨로지 스키마
 ├── examples/
-│   └── basic_usage.py       # 사용 예제
+│   ├── basic_usage.py       # 사용 예제
+│   └── output/              # 샘플 데이터
 ├── tests/                   # 테스트 코드
-├── pyproject.toml           # 프로젝트 설정
+├── pyproject.toml           # 프로젝트 설정 (uv 호환)
 └── README.md
 ```
 
@@ -204,6 +283,28 @@ grokipedia-ontology/
 | `equivalent_to` | 의미적 동치 |
 
 ## 개발
+
+### uv 사용 (권장)
+
+```bash
+# 프로젝트 설정 (모든 의존성 설치)
+uv sync --all-extras
+
+# 테스트 실행
+uv run pytest
+
+# 코드 포맷팅
+uv run ruff check --fix .
+uv run ruff format .
+
+# 타입 검사
+uv run mypy src/grokipedia_ontology
+
+# MCP 서버 테스트
+uv run grokipedia-ontology mcp-serve examples/output/ai_knowledge_graph_mcp.json
+```
+
+### pip 사용
 
 ```bash
 # 의존성 설치

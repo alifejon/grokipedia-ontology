@@ -7,6 +7,7 @@ by AI assistants like Claude.
 
 from __future__ import annotations
 
+import asyncio
 import json
 from pathlib import Path
 from typing import Any
@@ -15,6 +16,7 @@ from grokipedia_ontology.models import Concept, Relation, ConceptType, RelationT
 from grokipedia_ontology.graph import KnowledgeGraph
 from grokipedia_ontology.ontology import GrokipediaOntology
 from grokipedia_ontology.search import SearchIndex
+from grokipedia_ontology.fetcher import GrokipediaFetcher
 from grokipedia_ontology.utils import get_logger
 
 logger = get_logger(__name__)
@@ -311,6 +313,55 @@ class OntologyMCPServer:
                         "properties": {}
                     }
                 ),
+                # Real-time Grokipedia tools
+                Tool(
+                    name="fetch_grokipedia_article",
+                    description="Fetch an article from Grokipedia in real-time. Use this to get the latest information about any topic directly from grokipedia.com.",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "topic": {
+                                "type": "string",
+                                "description": "Topic name to fetch (e.g., 'Machine Learning', 'Python'). Spaces will be converted to underscores."
+                            },
+                            "add_to_graph": {
+                                "type": "boolean",
+                                "description": "Whether to add the fetched article to the local knowledge graph (default: true)",
+                                "default": True
+                            }
+                        },
+                        "required": ["topic"]
+                    }
+                ),
+                Tool(
+                    name="discover_grokipedia_articles",
+                    description="Discover related articles from Grokipedia starting from a topic. Crawls links to find connected articles.",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "start_topic": {
+                                "type": "string",
+                                "description": "Starting topic for discovery"
+                            },
+                            "max_depth": {
+                                "type": "integer",
+                                "description": "Maximum link depth to follow (default: 1)",
+                                "default": 1
+                            },
+                            "max_articles": {
+                                "type": "integer",
+                                "description": "Maximum number of articles to fetch (default: 5)",
+                                "default": 5
+                            },
+                            "add_to_graph": {
+                                "type": "boolean",
+                                "description": "Whether to add fetched articles to the local knowledge graph (default: true)",
+                                "default": True
+                            }
+                        },
+                        "required": ["start_topic"]
+                    }
+                ),
             ]
 
         @self.server.call_tool()
@@ -383,6 +434,21 @@ class OntologyMCPServer:
 
         elif name == "list_relation_types":
             return {"types": [t.value for t in RelationType]}
+
+        # Real-time Grokipedia tools
+        elif name == "fetch_grokipedia_article":
+            return await self._fetch_grokipedia_article(
+                topic=arguments["topic"],
+                add_to_graph=arguments.get("add_to_graph", True),
+            )
+
+        elif name == "discover_grokipedia_articles":
+            return await self._discover_grokipedia_articles(
+                start_topic=arguments["start_topic"],
+                max_depth=arguments.get("max_depth", 1),
+                max_articles=arguments.get("max_articles", 5),
+                add_to_graph=arguments.get("add_to_graph", True),
+            )
 
         else:
             return {"error": f"Unknown tool: {name}"}
@@ -1077,6 +1143,172 @@ Please answer the question based on the knowledge graph data. If more informatio
                 "confidence": confidence,
             }
         }
+
+    async def _fetch_grokipedia_article(
+        self,
+        topic: str,
+        add_to_graph: bool = True,
+    ) -> dict[str, Any]:
+        """Fetch an article from Grokipedia in real-time."""
+        try:
+            async with GrokipediaFetcher(timeout=30.0, max_retries=2) as fetcher:
+                article = await fetcher.fetch_article(topic)
+
+            if article is None:
+                return {
+                    "success": False,
+                    "error": f"Article not found: {topic}",
+                    "url": GrokipediaFetcher.build_url(topic),
+                }
+
+            # Convert article to concept if add_to_graph is True
+            if add_to_graph and self.graph:
+                concept = Concept(
+                    name=article.slug,
+                    label=article.title,
+                    description=article.summary or article.content[:500],
+                    concept_type=ConceptType.ENTITY,
+                    categories=article.categories,
+                    source_url=article.url,
+                )
+                self.graph.add_concept(concept)
+
+                # Index the new concept
+                if self.search_index:
+                    self.search_index.index_concept(concept)
+
+                # Add relations to linked articles
+                for link in article.links[:10]:
+                    link_slug = link.replace(" ", "_")
+                    relation = Relation(
+                        subject=article.slug,
+                        predicate=RelationType.RELATED_TO,
+                        object=link_slug,
+                        confidence=0.8,
+                    )
+                    try:
+                        self.graph.add_relation(relation)
+                    except Exception:
+                        pass  # Ignore if target doesn't exist
+
+                logger.info(f"Added article '{article.title}' to knowledge graph")
+
+            return {
+                "success": True,
+                "article": {
+                    "title": article.title,
+                    "url": str(article.url),
+                    "slug": article.slug,
+                    "summary": article.summary[:500] if article.summary else "",
+                    "categories": article.categories,
+                    "links": article.links[:20],
+                    "sections": [s["title"] for s in article.sections],
+                    "infobox": article.infobox,
+                },
+                "added_to_graph": add_to_graph and self.graph is not None,
+            }
+
+        except Exception as e:
+            logger.error(f"Error fetching article '{topic}': {e}")
+            return {
+                "success": False,
+                "error": str(e),
+                "topic": topic,
+            }
+
+    async def _discover_grokipedia_articles(
+        self,
+        start_topic: str,
+        max_depth: int = 1,
+        max_articles: int = 5,
+        add_to_graph: bool = True,
+    ) -> dict[str, Any]:
+        """Discover related articles from Grokipedia."""
+        try:
+            async with GrokipediaFetcher(
+                timeout=30.0,
+                max_retries=2,
+                delay_between_requests=0.5,
+            ) as fetcher:
+                articles = await fetcher.discover_related(
+                    start_topic,
+                    max_depth=max_depth,
+                    max_articles=max_articles,
+                )
+
+            if not articles:
+                return {
+                    "success": False,
+                    "error": f"No articles found starting from: {start_topic}",
+                }
+
+            results = []
+            added_count = 0
+
+            for article in articles:
+                article_info = {
+                    "title": article.title,
+                    "url": str(article.url),
+                    "slug": article.slug,
+                    "summary": article.summary[:200] if article.summary else "",
+                    "categories": article.categories,
+                    "link_count": len(article.links),
+                }
+                results.append(article_info)
+
+                # Add to graph if requested
+                if add_to_graph and self.graph:
+                    concept = Concept(
+                        name=article.slug,
+                        label=article.title,
+                        description=article.summary or article.content[:500],
+                        concept_type=ConceptType.ENTITY,
+                        categories=article.categories,
+                        source_url=article.url,
+                    )
+
+                    # Check if concept already exists
+                    if not self.graph.get_concept(article.slug):
+                        self.graph.add_concept(concept)
+                        if self.search_index:
+                            self.search_index.index_concept(concept)
+                        added_count += 1
+
+            # Add relations between discovered articles
+            if add_to_graph and self.graph:
+                for article in articles:
+                    for link in article.links[:10]:
+                        link_slug = link.replace(" ", "_")
+                        # Only add relation if target exists in graph
+                        if self.graph.get_concept(link_slug):
+                            relation = Relation(
+                                subject=article.slug,
+                                predicate=RelationType.RELATED_TO,
+                                object=link_slug,
+                                confidence=0.8,
+                            )
+                            try:
+                                self.graph.add_relation(relation)
+                            except Exception:
+                                pass
+
+            logger.info(f"Discovered {len(articles)} articles, added {added_count} to graph")
+
+            return {
+                "success": True,
+                "start_topic": start_topic,
+                "total_found": len(articles),
+                "added_to_graph": added_count,
+                "articles": results,
+            }
+
+        except Exception as e:
+            logger.error(f"Error discovering articles from '{start_topic}': {e}")
+            return {
+                "success": False,
+                "error": str(e),
+                "start_topic": start_topic,
+            }
 
     async def run(self) -> None:
         """Run the MCP server."""
