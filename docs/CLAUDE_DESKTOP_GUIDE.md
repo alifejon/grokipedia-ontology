@@ -6,7 +6,10 @@
 
 1. [사전 요구사항](#사전-요구사항)
 2. [설치](#설치)
+   - [pip으로 설치](#방법-1-pip으로-설치)
+   - [uv로 설치 (권장)](#방법-2-uv로-설치-권장)
 3. [Claude Desktop 설정](#claude-desktop-설정)
+   - [uv 환경 설정](#5-uv-환경-설정)
 4. [데이터 준비](#데이터-준비)
 5. [사용 방법](#사용-방법)
 6. [활용 예시](#활용-예시)
@@ -22,7 +25,7 @@
 
 ## 설치
 
-### 1. 패키지 설치
+### 방법 1: pip으로 설치
 
 ```bash
 # MCP 의존성과 함께 설치
@@ -32,7 +35,49 @@ pip install grokipedia-ontology[mcp]
 pip install grokipedia-ontology[all]
 ```
 
-### 2. 설치 확인
+### 방법 2: uv로 설치 (권장)
+
+[uv](https://github.com/astral-sh/uv)는 Rust로 작성된 빠른 Python 패키지 관리자입니다.
+
+#### uv 설치
+
+```bash
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Homebrew (macOS)
+brew install uv
+```
+
+#### uv로 패키지 설치
+
+```bash
+# 새 가상환경 생성 및 패키지 설치
+uv venv
+source .venv/bin/activate  # Linux/macOS
+# .venv\Scripts\activate  # Windows
+
+# MCP 의존성과 함께 설치
+uv pip install grokipedia-ontology[mcp]
+
+# 또는 전체 기능 설치
+uv pip install grokipedia-ontology[all]
+```
+
+#### uv tool로 전역 설치
+
+```bash
+# uv tool로 전역 설치 (별도 가상환경 없이 사용)
+uv tool install grokipedia-ontology[mcp]
+
+# 설치 위치 확인
+uv tool dir
+```
+
+### 설치 확인
 
 ```bash
 # CLI가 정상 작동하는지 확인
@@ -142,7 +187,123 @@ notepad "$env:APPDATA\Claude\claude_desktop_config.json"
 }
 ```
 
-### 5. Claude Desktop 재시작
+### 5. uv 환경 설정
+
+#### uv venv 사용 시
+
+uv로 생성한 가상환경의 경로를 사용합니다:
+
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "/path/to/project/.venv/bin/grokipedia-ontology",
+      "args": ["mcp-serve", "/path/to/data.json"],
+      "env": {}
+    }
+  }
+}
+```
+
+**운영체제별 경로 예시:**
+
+macOS/Linux:
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "/Users/username/projects/grokipedia/.venv/bin/grokipedia-ontology",
+      "args": ["mcp-serve", "/Users/username/data/knowledge_graph.json"],
+      "env": {}
+    }
+  }
+}
+```
+
+Windows:
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "C:\\Users\\username\\projects\\grokipedia\\.venv\\Scripts\\grokipedia-ontology.exe",
+      "args": ["mcp-serve", "C:\\Users\\username\\data\\knowledge_graph.json"],
+      "env": {}
+    }
+  }
+}
+```
+
+#### uv tool 사용 시
+
+`uv tool install`로 설치한 경우, uv tool 디렉토리의 경로를 사용합니다:
+
+```bash
+# uv tool 설치 경로 확인
+uv tool dir
+# 출력 예: /Users/username/.local/share/uv/tools
+```
+
+macOS/Linux:
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "/Users/username/.local/share/uv/tools/grokipedia-ontology/bin/grokipedia-ontology",
+      "args": ["mcp-serve", "/path/to/data.json"],
+      "env": {}
+    }
+  }
+}
+```
+
+Windows:
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "C:\\Users\\username\\.local\\share\\uv\\tools\\grokipedia-ontology\\Scripts\\grokipedia-ontology.exe",
+      "args": ["mcp-serve", "C:\\path\\to\\data.json"],
+      "env": {}
+    }
+  }
+}
+```
+
+#### uv run 사용 (프로젝트 디렉토리 기반)
+
+프로젝트 디렉토리에서 직접 실행하는 방법:
+
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/grokipedia-ontology", "grokipedia-ontology", "mcp-serve", "/path/to/data.json"],
+      "env": {}
+    }
+  }
+}
+```
+
+이 방식은 프로젝트의 `pyproject.toml`에 정의된 의존성을 자동으로 사용합니다.
+
+#### uvx 사용 (일회성 실행)
+
+패키지를 설치하지 않고 직접 실행:
+
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "uvx",
+      "args": ["--from", "grokipedia-ontology[mcp]", "grokipedia-ontology", "mcp-serve", "/path/to/data.json"],
+      "env": {}
+    }
+  }
+}
+```
+
+### 6. Claude Desktop 재시작
 
 설정 변경 후 Claude Desktop을 완전히 종료했다가 다시 시작해야 합니다.
 
@@ -336,6 +497,111 @@ MCP 서버 로그를 직접 확인:
 grokipedia-ontology mcp-serve /path/to/data.json
 ```
 
+### 6. uv 환경 문제 해결
+
+#### uv 명령어를 찾을 수 없음
+
+**증상:** `uv: command not found`
+
+**해결:**
+```bash
+# uv 설치 확인
+which uv
+
+# PATH에 추가 (Linux/macOS - .bashrc 또는 .zshrc에 추가)
+export PATH="$HOME/.local/bin:$PATH"
+
+# 또는 uv 재설치
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+#### uv tool 설치 경로 찾기
+
+**증상:** uv tool로 설치했지만 실행 파일 경로를 모름
+
+**해결:**
+```bash
+# uv tool 디렉토리 확인
+uv tool dir
+
+# 설치된 도구 목록 확인
+uv tool list
+
+# 특정 도구의 실행 파일 경로 확인
+ls $(uv tool dir)/grokipedia-ontology/bin/
+```
+
+#### uv venv 활성화 문제
+
+**증상:** 가상환경이 활성화되지 않음
+
+**해결:**
+```bash
+# 가상환경 재생성
+rm -rf .venv
+uv venv
+
+# 활성화 (Linux/macOS)
+source .venv/bin/activate
+
+# 활성화 (Windows PowerShell)
+.venv\Scripts\Activate.ps1
+
+# 활성화 (Windows CMD)
+.venv\Scripts\activate.bat
+```
+
+#### uvx 실행 오류
+
+**증상:** `uvx` 명령이 패키지를 찾지 못함
+
+**해결:**
+```bash
+# 캐시 정리
+uv cache clean
+
+# 패키지 이름과 extras 확인
+uvx --from "grokipedia-ontology[mcp]" grokipedia-ontology --help
+
+# 특정 버전 지정
+uvx --from "grokipedia-ontology[mcp]==1.0.0" grokipedia-ontology mcp-serve /path/to/data.json
+```
+
+#### Claude Desktop에서 uv 경로 인식 문제
+
+**증상:** Claude Desktop이 uv나 uvx 명령을 찾지 못함
+
+**해결:**
+설정 파일에 PATH 환경 변수를 명시적으로 추가:
+
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "uvx",
+      "args": ["--from", "grokipedia-ontology[mcp]", "grokipedia-ontology", "mcp-serve", "/path/to/data.json"],
+      "env": {
+        "PATH": "/Users/username/.local/bin:/usr/local/bin:/usr/bin:/bin"
+      }
+    }
+  }
+}
+```
+
+또는 uv의 절대 경로를 사용:
+
+```json
+{
+  "mcpServers": {
+    "grokipedia-ontology": {
+      "command": "/Users/username/.local/bin/uvx",
+      "args": ["--from", "grokipedia-ontology[mcp]", "grokipedia-ontology", "mcp-serve", "/path/to/data.json"],
+      "env": {}
+    }
+  }
+}
+```
+
 ## 고급 설정
 
 ### 여러 지식 그래프 사용
@@ -377,3 +643,5 @@ grokipedia-ontology mcp-serve /path/to/data.json
 - [MCP 공식 문서](https://modelcontextprotocol.io/)
 - [Claude Desktop 다운로드](https://claude.ai/download)
 - [Grokipedia Ontology GitHub](https://github.com/grokipedia-ontology/grokipedia-ontology)
+- [uv 공식 문서](https://docs.astral.sh/uv/)
+- [uv GitHub](https://github.com/astral-sh/uv)
