@@ -26,7 +26,12 @@ try:
     from mcp.types import (
         Tool,
         TextContent,
-        CallToolResult,
+        Resource,
+        ResourceTemplate,
+        Prompt,
+        PromptArgument,
+        PromptMessage,
+        GetPromptResult,
     )
     MCP_AVAILABLE = True
 except ImportError:
@@ -66,7 +71,7 @@ class OntologyMCPServer:
         if data_path:
             self.load_data(data_path)
 
-        self._register_tools()
+        self._register_handlers()
 
     def load_data(self, path: Path) -> None:
         """Load data from file."""
@@ -94,6 +99,12 @@ class OntologyMCPServer:
             self.search_index.index_graph(self.graph)
 
         logger.info(f"Loaded {len(self.graph) if self.graph else 0} concepts from {path}")
+
+    def _register_handlers(self) -> None:
+        """Register MCP tools, resources, and prompts."""
+        self._register_tools()
+        self._register_resources()
+        self._register_prompts()
 
     def _register_tools(self) -> None:
         """Register MCP tools."""
@@ -375,6 +386,404 @@ class OntologyMCPServer:
 
         else:
             return {"error": f"Unknown tool: {name}"}
+
+    def _register_resources(self) -> None:
+        """Register MCP resources."""
+
+        @self.server.list_resources()
+        async def list_resources() -> list[Resource]:
+            """List available resources."""
+            resources = [
+                Resource(
+                    uri="ontology://stats",
+                    name="Knowledge Graph Statistics",
+                    description="Overall statistics about the knowledge graph",
+                    mimeType="application/json",
+                ),
+                Resource(
+                    uri="ontology://concepts",
+                    name="All Concepts",
+                    description="List of all concepts in the knowledge graph",
+                    mimeType="application/json",
+                ),
+                Resource(
+                    uri="ontology://relations",
+                    name="All Relations",
+                    description="List of all relations in the knowledge graph",
+                    mimeType="application/json",
+                ),
+                Resource(
+                    uri="ontology://types",
+                    name="Available Types",
+                    description="List of available concept and relation types",
+                    mimeType="application/json",
+                ),
+            ]
+
+            # Add dynamic concept resources if data is loaded
+            if self.graph:
+                for concept in list(self.graph.iterate_concepts())[:50]:
+                    resources.append(Resource(
+                        uri=f"ontology://concepts/{concept.name}",
+                        name=concept.label,
+                        description=f"{concept.concept_type.value}: {concept.description[:100] if concept.description else 'No description'}",
+                        mimeType="application/json",
+                    ))
+
+            return resources
+
+        @self.server.list_resource_templates()
+        async def list_resource_templates() -> list[ResourceTemplate]:
+            """List resource templates for dynamic resources."""
+            return [
+                ResourceTemplate(
+                    uriTemplate="ontology://concepts/{name}",
+                    name="Concept Details",
+                    description="Get detailed information about a specific concept",
+                    mimeType="application/json",
+                ),
+                ResourceTemplate(
+                    uriTemplate="ontology://neighbors/{name}",
+                    name="Concept Neighbors",
+                    description="Get concepts connected to a specific concept",
+                    mimeType="application/json",
+                ),
+                ResourceTemplate(
+                    uriTemplate="ontology://search/{query}",
+                    name="Search Results",
+                    description="Search for concepts matching a query",
+                    mimeType="application/json",
+                ),
+            ]
+
+        @self.server.read_resource()
+        async def read_resource(uri: str) -> str:
+            """Read a resource by URI."""
+            try:
+                result = self._handle_resource(uri)
+                return json.dumps(result, indent=2, default=str)
+            except Exception as e:
+                logger.error(f"Resource error: {e}")
+                return json.dumps({"error": str(e)})
+
+    def _handle_resource(self, uri: str) -> dict[str, Any]:
+        """Handle a resource read request."""
+        # Parse URI
+        if not uri.startswith("ontology://"):
+            return {"error": f"Invalid URI scheme: {uri}"}
+
+        path = uri[len("ontology://"):]
+        parts = path.split("/")
+
+        if path == "stats":
+            return self._get_stats()
+
+        elif path == "concepts":
+            graph = self._ensure_loaded()
+            concepts = []
+            for concept in graph.iterate_concepts():
+                concepts.append({
+                    "name": concept.name,
+                    "label": concept.label,
+                    "type": concept.concept_type.value,
+                })
+            return {"total": len(concepts), "concepts": concepts}
+
+        elif path == "relations":
+            graph = self._ensure_loaded()
+            relations = []
+            for source, target, data in graph.iterate_relations():
+                relations.append({
+                    "subject": source,
+                    "predicate": data.get("relation_type", "related_to"),
+                    "object": target,
+                })
+            return {"total": len(relations), "relations": relations}
+
+        elif path == "types":
+            return {
+                "concept_types": [t.value for t in ConceptType],
+                "relation_types": [t.value for t in RelationType],
+            }
+
+        elif parts[0] == "concepts" and len(parts) == 2:
+            return self._get_concept(parts[1])
+
+        elif parts[0] == "neighbors" and len(parts) == 2:
+            return self._get_neighbors(parts[1])
+
+        elif parts[0] == "search" and len(parts) == 2:
+            return self._search_concepts(parts[1])
+
+        else:
+            return {"error": f"Unknown resource: {uri}"}
+
+    def _register_prompts(self) -> None:
+        """Register MCP prompts."""
+
+        @self.server.list_prompts()
+        async def list_prompts() -> list[Prompt]:
+            """List available prompts."""
+            return [
+                Prompt(
+                    name="explore_concept",
+                    description="Explore and explain a concept from the knowledge graph in detail",
+                    arguments=[
+                        PromptArgument(
+                            name="concept_name",
+                            description="Name of the concept to explore (e.g., 'Machine_Learning')",
+                            required=True,
+                        ),
+                    ],
+                ),
+                Prompt(
+                    name="find_connections",
+                    description="Find and explain connections between two concepts",
+                    arguments=[
+                        PromptArgument(
+                            name="concept_a",
+                            description="First concept name",
+                            required=True,
+                        ),
+                        PromptArgument(
+                            name="concept_b",
+                            description="Second concept name",
+                            required=True,
+                        ),
+                    ],
+                ),
+                Prompt(
+                    name="summarize_domain",
+                    description="Summarize concepts in a specific domain or category",
+                    arguments=[
+                        PromptArgument(
+                            name="domain",
+                            description="Domain or category to summarize (e.g., 'AI', 'technology')",
+                            required=True,
+                        ),
+                    ],
+                ),
+                Prompt(
+                    name="compare_concepts",
+                    description="Compare and contrast two or more concepts",
+                    arguments=[
+                        PromptArgument(
+                            name="concepts",
+                            description="Comma-separated list of concept names to compare",
+                            required=True,
+                        ),
+                    ],
+                ),
+                Prompt(
+                    name="knowledge_qa",
+                    description="Answer a question using the knowledge graph",
+                    arguments=[
+                        PromptArgument(
+                            name="question",
+                            description="Question to answer",
+                            required=True,
+                        ),
+                    ],
+                ),
+            ]
+
+        @self.server.get_prompt()
+        async def get_prompt(name: str, arguments: dict[str, str] | None) -> GetPromptResult:
+            """Get a prompt by name with arguments."""
+            args = arguments or {}
+
+            if name == "explore_concept":
+                concept_name = args.get("concept_name", "")
+                concept_data = self._get_concept(concept_name)
+                neighbors_data = self._get_neighbors(concept_name)
+
+                return GetPromptResult(
+                    description=f"Explore the concept: {concept_name}",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"""Please explore and explain the following concept from the knowledge graph:
+
+**Concept:** {concept_name}
+
+**Details:**
+```json
+{json.dumps(concept_data, indent=2)}
+```
+
+**Connected Concepts:**
+```json
+{json.dumps(neighbors_data, indent=2)}
+```
+
+Please provide:
+1. A clear explanation of what this concept is
+2. Its significance and relationships to other concepts
+3. Key insights from the knowledge graph data
+"""
+                            ),
+                        ),
+                    ],
+                )
+
+            elif name == "find_connections":
+                concept_a = args.get("concept_a", "")
+                concept_b = args.get("concept_b", "")
+                path_data = self._find_path(concept_a, concept_b)
+                concept_a_data = self._get_concept(concept_a)
+                concept_b_data = self._get_concept(concept_b)
+
+                return GetPromptResult(
+                    description=f"Find connections between {concept_a} and {concept_b}",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"""Find and explain the connections between these two concepts:
+
+**Concept A:** {concept_a}
+```json
+{json.dumps(concept_a_data, indent=2)}
+```
+
+**Concept B:** {concept_b}
+```json
+{json.dumps(concept_b_data, indent=2)}
+```
+
+**Path Between Them:**
+```json
+{json.dumps(path_data, indent=2)}
+```
+
+Please explain:
+1. How these concepts are related
+2. The significance of their connection
+3. Any interesting patterns or insights
+"""
+                            ),
+                        ),
+                    ],
+                )
+
+            elif name == "summarize_domain":
+                domain = args.get("domain", "")
+                search_data = self._search_concepts(domain, limit=20)
+                stats_data = self._get_stats()
+
+                return GetPromptResult(
+                    description=f"Summarize the domain: {domain}",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"""Summarize the following domain from the knowledge graph:
+
+**Domain:** {domain}
+
+**Related Concepts:**
+```json
+{json.dumps(search_data, indent=2)}
+```
+
+**Knowledge Graph Stats:**
+```json
+{json.dumps(stats_data, indent=2)}
+```
+
+Please provide:
+1. An overview of this domain
+2. Key concepts and their relationships
+3. Important patterns or hierarchies
+4. Suggestions for further exploration
+"""
+                            ),
+                        ),
+                    ],
+                )
+
+            elif name == "compare_concepts":
+                concepts_str = args.get("concepts", "")
+                concept_names = [c.strip() for c in concepts_str.split(",")]
+                concepts_data = [self._get_concept(name) for name in concept_names]
+
+                return GetPromptResult(
+                    description=f"Compare concepts: {concepts_str}",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"""Compare and contrast the following concepts:
+
+**Concepts to Compare:** {', '.join(concept_names)}
+
+**Concept Details:**
+```json
+{json.dumps(concepts_data, indent=2)}
+```
+
+Please provide:
+1. Key similarities between these concepts
+2. Important differences
+3. How they relate to each other
+4. When to use or consider each one
+"""
+                            ),
+                        ),
+                    ],
+                )
+
+            elif name == "knowledge_qa":
+                question = args.get("question", "")
+                # Extract keywords and search
+                search_data = self._search_concepts(question, limit=10)
+                stats_data = self._get_stats()
+
+                return GetPromptResult(
+                    description=f"Answer: {question}",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"""Answer the following question using the knowledge graph:
+
+**Question:** {question}
+
+**Relevant Concepts Found:**
+```json
+{json.dumps(search_data, indent=2)}
+```
+
+**Knowledge Graph Overview:**
+- Total Concepts: {stats_data.get('total_concepts', 0)}
+- Total Relations: {stats_data.get('total_relations', 0)}
+
+Please answer the question based on the knowledge graph data. If more information is needed, suggest which tools to use (search_concepts, get_concept, find_path, etc.).
+"""
+                            ),
+                        ),
+                    ],
+                )
+
+            else:
+                return GetPromptResult(
+                    description="Unknown prompt",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"Unknown prompt: {name}",
+                            ),
+                        ),
+                    ],
+                )
 
     def _ensure_loaded(self) -> KnowledgeGraph:
         """Ensure data is loaded."""
