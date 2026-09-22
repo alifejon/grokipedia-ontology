@@ -6,7 +6,7 @@ Grokipedia를 데이터 소스로 활용하는 지식 그래프 및 온톨로지
 
 이 프로젝트는 [Grokipedia](https://grokipedia.com/)에서 추출한 지식을 OWL/RDF 기반 온톨로지로 구조화하고, 지식 그래프를 구축하여 의미론적 질의 및 추론을 수행할 수 있는 도구를 제공합니다.
 
-방향은 [docs/DIRECTION.md](docs/DIRECTION.md)에 고정했다. 기준일은 2026-09-22이다. 수집의 기준 경로는 HTML이 아니라 `GET /api/page-preview`이고, 편집 큐나 전량 미러는 범위 밖이다.
+방향은 [docs/DIRECTION.md](docs/DIRECTION.md)에 고정했다. 기준일은 2026-09-22이다. 수집은 `GET /api/page-preview`로 하고, 도메인 슬라이스를 출처가 남는 온톨로지로 만든다.
 
 ### 주요 기능
 
